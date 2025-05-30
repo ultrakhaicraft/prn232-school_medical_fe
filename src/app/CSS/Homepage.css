@@ -2,69 +2,9 @@
   box-sizing: border-box;
 }
 
-html{
-  font-size:16px
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f7f9fc;
-  color: #333;
-}
 
 
 
-.starlight-page {
-  width: 100%;
-}
-
-.header {
-  background-color: white;
-  border-bottom: 1px solid #ddd;
-  padding: 1rem 0;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.header-container {
-  max-width: 100vw;
-  margin: 0 auto;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  position:relative;
-  left: 5%;
-  font-size: 1.8rem;
-  font-weight: bolder;
-  color: #2b50ec;
-}
-
-.nav a {
-  margin: 0 1rem;
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  font-size:1.2rem;
-}
-
-.login-button {
-  position:relative;
-  right: 5%;
-  display: inline-block;
-  background-color: #2b50ec;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
 
 .hero {
   background-color: #eef2fb;

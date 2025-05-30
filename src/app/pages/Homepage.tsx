@@ -1,20 +1,14 @@
 import React from 'react';
-import './CSS/Homepage.css'; // Assuming you have a CSS file for styling
+import { Link } from 'react-router-dom';
+import Footer from '../../components/footer';
+import HomepageNavBar from '../../components/homepage-nav-bar'; 
+
 
 function Homepage() {
   return (
-    <div className="starlight-page">
+    <div className="normal-page">
       {/* Header */}
-      <header className="header">
-        <div className="header-container">
-          <div className="logo">🎓 Starlight Academy</div>
-          <nav className="nav">
-            <a href="#">Home</a>
-            <a href="#">Blog</a>           
-          </nav>
-          <button className="login-button">Login</button>
-        </div>
-      </header>
+      <HomepageNavBar />
 
       {/* Hero Section */}
       <section className="hero">
@@ -71,14 +65,7 @@ function Homepage() {
       </section>
 
       {/* Footer */}
-      <footer className="footer">
-        <p>© 2024 Starlight Academy. All rights reserved.</p>
-        <div className="social-icons">
-          <a href="#">🔵</a>
-          <a href="#">🐦</a>
-          <a href="#">📸</a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
