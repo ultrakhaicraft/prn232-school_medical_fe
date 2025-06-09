@@ -1,8 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Footer from '../../components/footer';
-import HomepageNavBar from '../../components/homepage-nav-bar'; 
 
+import Footer from '../../components/Landing_Page/footer';
+import HomepageNavBar from '../../components/Landing_Page/homepage-nav-bar'; 
+import '../../app/CSS/Homepage.css'
 
 function Homepage() {
   return (

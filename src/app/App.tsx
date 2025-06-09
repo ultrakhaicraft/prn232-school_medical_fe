@@ -1,7 +1,12 @@
-/*export const App = () => {
+import { AppRouter } from "../app/Router"
+
+/*Intend to be index.tsx from bulletproof-react-app */
+const App = () => {
     return (
-        <AppProvider>
+        //<AppProvider>
             <AppRouter />
-        </AppProvider>
+        //</AppProvider>
     )
-}*/
+}
+
+export default App; 
