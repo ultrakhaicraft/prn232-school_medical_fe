@@ -1,0 +1,2 @@
+A PAGE contains MULTIPLE COMPONENT thing (from components) and MULTIPLE HOOKS. It referencess CSS file via main.tsx (aka globally)
++These hooks job is to call BE API and receive the response data to render it
