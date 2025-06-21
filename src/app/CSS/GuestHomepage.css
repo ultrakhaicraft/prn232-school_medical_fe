@@ -95,11 +95,11 @@
 }
 
 .service-card {
-  background-color: white;
+  background-color: #eef2fb;
   padding: 1.5rem;
   border-radius: 12px;
   width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
@@ -108,25 +108,3 @@
   margin-bottom: 1rem;
 }
 
-/* Footer */
-.footer {
-  background-color: #f7f7f7;
-  padding: 1rem 5rem;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #777;
-  background-color: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  height: 70px;
-}
-
-.footer p {
-  margin: 0 1rem 0 0;
-}
-
-.social-icons a {
-  margin: 0 0 0 rem;
-  text-decoration: none;
-  font-size: 1.2rem;
-}

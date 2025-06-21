@@ -81,9 +81,9 @@ export const accountService = {
   },
 
  
-  getDetailById: async (userId: string): Promise<StudentHealthRecordDetail> => {
+  getDetailById: async (studentHealthRecordId: string): Promise<StudentHealthRecordDetail> => {
     const response = await apiClient.get<RawApiResponse<StudentHealthRecordDetail>>('/student-health-record',{
-      params: {userId}
+      params: {studentHealthRecordId}
     });
 
     return response.data.data;
@@ -98,10 +98,10 @@ export const accountService = {
   },
 
   
-  update: async (id: string, updateData: StudentHealthRecordUpdate): Promise<string> => {
+  update: async (studentHealthRecordId: string, updateData: StudentHealthRecordUpdate): Promise<string> => {
     // We use PUT here, but PATCH is also common for partial updates.
     const response = await apiClient.put<RawApiResponse<string>>('/student-health-record',{
-        id,
+        studentHealthRecordId,
         ...updateData
       },
       {
@@ -113,9 +113,9 @@ export const accountService = {
   },
 
  
-  remove: async (userId: string): Promise<string> => {
+  remove: async (studentHealthRecordId: string): Promise<string> => {
     const response = await apiClient.delete<RawApiResponse<string>>('/student-health-record',{
-      params: { userId },
+      params: { studentHealthRecordId },
     });
 
     return response.data.data;

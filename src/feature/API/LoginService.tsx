@@ -14,6 +14,8 @@ export const useAuth = () => {
         setIsLoading(true);
         setError(null);
 
+        console.log('Login attempt with credentials:', credentials);
+
         if (!credentials.email || !credentials.password) {
             setError('Please fill in all fields');
             setIsLoading(false);
@@ -26,23 +28,41 @@ export const useAuth = () => {
                 timeout: 8000
             });
 
-            //Only need to store the token here
-            if (response.data.tokenString) {
-                localStorage.setItem('authToken', response.data.tokenString);
-            }
-            
-            //Store user role and user ID if provided
-            if (response.data.role) {
-                localStorage.setItem('userRole', response.data.role);
+           // Access the nested data object
+            const userData = response.data.data;
+            const tokenData = userData.token;
+
+            // Store the token
+            if (tokenData && tokenData.tokenString) {
+                localStorage.setItem('authToken', tokenData.tokenString);
             }
 
-            if (response.data.roleId) {
-                localStorage.setItem('userId', response.data.userId);
+            // Store user data from the data object
+            if (userData.role) {
+                localStorage.setItem('userRole', userData.role);
             }
+
+            if (userData.fullName) {
+                localStorage.setItem('fullName', userData.fullName);
+            }
+
+            if (userData.email) {
+                localStorage.setItem('email', userData.email);
+            }
+
+            console.log('Login successful:', response.data);
 
             // Navigate to the user's homepage upon successful login
             // Depend on the role of the user, you might want to navigate to different pages
-            navigate('/parentHomepage'); 
+            if(userData.role === 'Student') {
+                navigate('/studentHomepage');
+            } else if(userData.role === 'Parent') {
+                navigate('/parentHomepage'); 
+            } else if(userData.role === 'SchoolNurse') {
+                navigate('/nurseHomepage');
+            }
+
+            
 
         } catch (err: any) {
             if (err.response) {

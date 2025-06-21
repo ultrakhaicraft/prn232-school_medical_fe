@@ -5,6 +5,7 @@ import { useAuth } from '../../feature/API/LoginService';
 import { LoginForm } from '../../components/Authentication/login-form';
 import { AuthLayout } from '../../components/Authentication/auth-spilt-screen-layout';
 import { Toast } from '../../components/Notification/Toast';
+import '../../app/CSS/Login.css'
 
 const Login = () => {
     const navigate = useNavigate();
@@ -19,6 +20,8 @@ const Login = () => {
     // State for toast notifications
     const [toast, setToast] = useState({ isVisible: false, message: '', type: 'success' as 'success' | 'error' });
 
+
+
     // Effect to show toast on successful registration
     useEffect(() => {
         if (location.state?.registrationSuccess) {
@@ -28,9 +31,12 @@ const Login = () => {
                 type: 'success',
             });
             // Clear location state to prevent toast on refresh
+
             navigate('/login', { state: {}, replace: true });
         }
     }, [location.state, navigate]);
+
+    
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
