@@ -1,15 +1,14 @@
+
 import React from 'react';
 import Footer from '../../components/Landing_Page/footer';
 import UserHomepageNavBar from '../../components/User_homepage/userhome-nav-bar'; 
 import WelcomeBox from '../../components/User_homepage/welcome-box';
 import HealthStatus from '../../components/User_homepage/health-status-box';
 import HealthAnnouncements from '../../components/User_homepage/news-box';
-import '../../app/CSS/ParentHomepage.css'; // Importing the CSS for the parent homepage
 
-
-function ParentHomepage() {
+export default function StudentHomePage() {
     // This component represents the student homepage
-    const userType = 'parent'; // This can be dynamically set based on user authentication]
+    const userType = 'student'; // This can be dynamically set based on user authentication]
 
     return (
         <div className="normal-page">
@@ -26,14 +25,9 @@ function ParentHomepage() {
             <HealthStatus
             userType={userType}
             lastCheckupDate="March 15, 2024" />
-            <HealthAnnouncements />     
-
+            <HealthAnnouncements />       
             <Footer />
         </div>
         
     );
 }
-
-
-
-export default ParentHomepage;

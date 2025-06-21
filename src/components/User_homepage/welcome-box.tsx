@@ -1,23 +1,27 @@
 import React from 'react';
 
-
-
-
-function Welcome({ name, childName, avatarSrc }:{
+interface WelcomeProps {
   name: string;
   childName: string;
   avatarSrc: string;
-}) {
+  userType:string;
+}
+
+function Welcome({ name, childName, avatarSrc, userType }: WelcomeProps) {
   return (
     <section className="welcome-card">
       <img src={avatarSrc} alt="User" className="welcome-avatar" />
       <div className="welcome-text">
         <p className="welcome-greeting">Welcome back,</p>
         <h1 className="welcome-name">{name}</h1>
-        <p className="welcome-parent-info">
-          {/* Replace with <img src="/assets/parent-icon.svg" alt="Parent icon" className="parent-icon" /> */}
-          <span className="parent-icon" role="img" aria-label="parent icon">👥</span>
-          Parent of: <span className="child-name">{childName}</span>
+        <p className="welcome-info">
+          {userType === 'student' ? (
+            <span className="student-icon" role="img" aria-label="student icon">👨‍🎓</span>
+          ) : (
+            <span className="parent-icon" role="img" aria-label="parent icon">👩‍👧</span>
+          )}
+          ️{userType === 'student' ? '' : 'Parent'} of: <span className="child-name">{childName}</span>          
+          {userType === 'student' && <span>Class of 10A</span>}
         </p>
       </div>
     </section>
