@@ -1,6 +1,5 @@
 
-import Footer from '../../components/Landing_Page/footer';
-import HomepageNavBar from '../../components/Landing_Page/homepage-nav-bar'; 
+import { Footer, HomepageNavBar } from '../../components'; 
 import '../../app/CSS/Homepage.css'
 
 function Homepage() {

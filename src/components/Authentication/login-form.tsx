@@ -2,7 +2,7 @@ import React from 'react';
 import '../../app/CSS/Login.css'
 
 interface LoginFormProps {
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
   error: string | null;
@@ -39,6 +39,17 @@ export const LoginForm = ({ handleInputChange, handleSubmit, isLoading, error }:
             disabled={isLoading}
             required
           />
+        </div>
+
+        <div className='input-group'>
+          <label htmlFor='role'>Role</label>
+          <select id='role' name='role' onChange={(e) => handleInputChange(e as any)} disabled={isLoading} required>
+            <option value=''>Select Role</option>
+            <option value='Student'>Student</option>
+            <option value='Parent'>Parent</option>
+            <option value='SchoolManager'>School Manager</option>
+            <option value='Admin'>Admin</option>
+          </select>
         </div>
         
         <button className='primary-btn' type='submit' disabled={isLoading}>

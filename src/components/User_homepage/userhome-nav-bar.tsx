@@ -1,6 +1,6 @@
+import React from 'react';
 
-
-export default function UserHomeNavBar(){
+export function UserHomeNavBar(){
     return (
         <header className="header">
         <div className="header-container">

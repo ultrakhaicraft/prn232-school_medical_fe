@@ -26,7 +26,7 @@ const announcementsData = [
 ];
 
 
-function HealthAnnouncements() {
+export function HealthAnnouncements() {
   return (
     <section className="health-announcements-section">
       <div className="announcements-header">
@@ -45,7 +45,7 @@ function HealthAnnouncements() {
 
 
 // Helper to get icon based on type (replace with actual SVGs/images)
-function getIcon({iconType}:{iconType: string}) {
+export function getIcon({iconType}:{iconType: string}) {
   if (iconType === 'stethoscope') {
     return <span className="card-icon-svg" style={{color: '#4f46e5'}} role="img" aria-label="checkup">🩺</span>;
   }
@@ -59,7 +59,7 @@ function getIcon({iconType}:{iconType: string}) {
 
 
 
-function AnnouncementCard({ iconType, title, tag, tagType, date, description, postedDate }
+export function AnnouncementCard({ iconType, title, tag, tagType, date, description, postedDate }
   :{ iconType: string; title: string; tag: string; tagType: string; date: string; description: string; postedDate: string; }
 ){
   return (

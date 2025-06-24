@@ -1,16 +1,12 @@
 import React from 'react';
-import Footer from '../../components/Landing_Page/footer';
-import UserHomepageNavBar from '../../components/User_homepage/userhome-nav-bar'; 
-import WelcomeBox from '../../components/User_homepage/welcome-box';
-import HealthStatus from '../../components/User_homepage/health-status-box';
-import HealthAnnouncements from '../../components/User_homepage/news-box';
+import { Footer, UserHomeNavBar, Welcome, HealthStatus, HealthAnnouncements } from '../../components';
 
 
 function ParentHomepage() {
     return (
         <div className="normal-page">
-            <UserHomepageNavBar />
-            <WelcomeBox
+            <UserHomeNavBar />
+            <Welcome
             name="John Doe"
             childName="Jane Doe"
             avatarSrc="/assets/PRN_Avatar.svg" 

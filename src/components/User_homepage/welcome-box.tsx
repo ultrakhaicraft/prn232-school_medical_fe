@@ -1,9 +1,6 @@
 import React from 'react';
 
-
-
-
-function Welcome({ name, childName, avatarSrc }:{
+export function Welcome({ name, childName, avatarSrc }:{
   name: string;
   childName: string;
   avatarSrc: string;
@@ -23,5 +20,3 @@ function Welcome({ name, childName, avatarSrc }:{
     </section>
   );
 }
-
-export default Welcome;

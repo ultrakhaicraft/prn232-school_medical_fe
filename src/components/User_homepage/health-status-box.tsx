@@ -1,9 +1,6 @@
+import React from 'react';
 
-
-
-
-
-function HealthStatus({lastCheckupDate} : {lastCheckupDate: string}) {
+export function HealthStatus({lastCheckupDate} : {lastCheckupDate: string}) {
     return(
         <section className="health-status-card">
       <div className="health-status-icon-area">
@@ -38,5 +35,3 @@ function HealthStatus({lastCheckupDate} : {lastCheckupDate: string}) {
     </section>
     );
 }
-
-export default HealthStatus;
