@@ -1,6 +1,9 @@
-import React from 'react';
+interface HealthStatusProps {
+    lastCheckupDate: string;
+    userType: string; // Optional prop for user type
+}
 
-export function HealthStatus({lastCheckupDate} : {lastCheckupDate: string}) {
+function HealthStatus({lastCheckupDate, userType} : HealthStatusProps) {
     return(
         <section className="health-status-card">
       <div className="health-status-icon-area">
@@ -11,7 +14,13 @@ export function HealthStatus({lastCheckupDate} : {lastCheckupDate: string}) {
         <p className="status-text">Safe & Healthy</p>
       </div>
       <div className="health-status-details">
-        <h2 className="health-status-title">Your child is in good health</h2>
+        {
+          userType === 'parent' ? (
+            <h2 className="health-status-title">Your Child's Health Status</h2>
+          ) : (
+            <h2 className="health-status-title">Your Health Status</h2>
+          )
+        }
         <p className="health-checkup-info">
           Last health checkup: <span className="checkup-date">{lastCheckupDate}</span>
         </p>
@@ -35,3 +44,5 @@ export function HealthStatus({lastCheckupDate} : {lastCheckupDate: string}) {
     </section>
     );
 }
+
+export default HealthStatus;

@@ -1,6 +1,6 @@
 
 import { Footer, HomepageNavBar } from '../../components'; 
-import '../../app/CSS/Homepage.css'
+import '../../app/CSS/GuestHomepage.css'
 
 function Homepage() {
   return (
