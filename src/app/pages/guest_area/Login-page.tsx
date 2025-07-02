@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../../feature/API/LoginService';
-import { LoginForm } from '../../components/Authentication/login-form';
-import { AuthLayout } from '../../components/Authentication/auth-spilt-screen-layout';
-import { Toast } from '../../components/Notification/Toast';
-import '../../app/CSS/Login.css'
+import { useAuth } from '../../../feature/API/LoginService';
+import { LoginForm } from '../../../components/Authentication/login-form';
+import { AuthLayout } from '../../../components/Authentication/auth-spilt-screen-layout';
+import { Toast } from '../../../components/Notification/Toast';
+import '../../../app/CSS/Login.css'
 
 const Login = () => {
     const navigate = useNavigate();

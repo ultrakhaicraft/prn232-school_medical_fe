@@ -205,6 +205,16 @@
           margin-top: 1.5rem;
         }
 
+        .error-message{
+          color: #dc3545;
+          background-color: #f8d7da;
+          border: 1px solid #f5c6cb;
+          padding: 10px;
+          border-radius: 4px;
+          margin-bottom: 15px;
+          text-align: center;
+        }
+
         .form-section-header {
           display: flex;
           align-items: center;
@@ -342,3 +352,52 @@
             padding: 0 2rem;
           }
         }
+
+
+.empty-record-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;   /* Center vertically */
+    min-height: 80vh;      /* Take up most of the viewport height */
+    padding: 20px;
+}
+
+/* This is the main content box with your text and button */
+.medical-record-view-group {
+    text-align: center; /* Ensures content inside is centered */
+    max-width: 500px;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.medical-record-view-group h1 {
+    color: #4f46e5; /* A modern, accessible blue */
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 0.5em; /* Adds space below the heading */
+}
+
+.medical-record-view-group p {
+    color: #4b5563; /* A nice dark gray */
+    font-size: 1em;
+    margin-bottom: 1.5em; /* Adds space between text and button */
+    line-height: 1.5;
+}
+
+.create-record-button {
+    display: inline-block; /* Important for applying padding correctly to <a> tags */
+    background-color: #4f46e5;
+    color: white;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 6px;
+    text-decoration: none; /* Remove the default underline from the link */
+    transition: background-color 0.2s ease-in-out;
+}
+
+.create-record-button:hover {
+    background-color: #4338ca;
+}

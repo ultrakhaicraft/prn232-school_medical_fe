@@ -1,8 +1,8 @@
 import React from 'react';
 
 interface WelcomeProps {
-  name: string;
-  childName: string;
+  name: string|undefined;
+  childName: string|undefined;
   avatarSrc: string;
   userType:string;
 }

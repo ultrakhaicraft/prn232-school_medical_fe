@@ -42,13 +42,11 @@ export const useAuth = () => {
                 localStorage.setItem('userRole', userData.role);
             }
 
-            if (userData.fullName) {
-                localStorage.setItem('fullName', userData.fullName);
+            if (userData.id) {
+                localStorage.setItem('userId', userData.id);
             }
 
-            if (userData.email) {
-                localStorage.setItem('email', userData.email);
-            }
+            
 
             console.log('Login successful:', response.data);
 

@@ -1,84 +1,40 @@
-import React, { useState } from 'react';
-import UserHomeNavBar from '../../components/User_homepage/userhome-nav-bar';
-import Footer from '../../components/Landing_Page/footer';
 import FormSection from '../../components/FormSection'
 import { 
   IconHeart, 
   IconActivity, 
   IconEye, 
   IconInfo, 
-  IconPaperPlane, 
-  IconSave 
+  IconPaperPlane,  
 } from '../../components/IconList'; // Importing icons from a separate file
+import { AccountDetail } from '../../feature/API/AccountService';
 
-import '../CSS/MedicalRecord.css'; // Importing CSS styles for the medical record form
-
-// Main App Component - This is the entry point
-export default function CreateStudentHealthRecordPage() {
-  return (
-    <div className="app-container">
-      <UserHomeNavBar userType='parent' />
-      <main className="main-content">
-        <div className="form-wrapper">
-          <MedicalRecordForm />
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
+interface MedicalRecordFormProps {
+    formData: {
+      height: string;
+      allergies: string;
+      chronicDiseases: string;
+      vision:string;
+      hearing: string;
+    }
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    isLoading: boolean;
+    error: string | null;
 }
 
-// Header Component
-const Header = () => (
-  <header className="app-header">
-    <div className="container header-content">
-      <div className="logo-container">
-        <div className="logo-icon">
-          {/* Starlight Icon SVG */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="icon-large" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L14.47 8.53L21.5 9.53L16.5 14.24L17.94 21.02L12 17.77L6.06 21.02L7.5 14.24L2.5 9.53L9.53 8.53L12 2Z" />
-          </svg>
-        </div>
-        <h1 className="logo-title">Starlight Academy</h1>
-      </div>
-      <nav className="main-nav">
-        <a href="#">Dashboard</a>
-        <a href="#">Student Health</a>
-        <a href="#" className="active">Medical Records</a>
-        <a href="#">Announcements</a>
-        <a href="#">Support</a>
-      </nav>
-      <div className="profile-container">
-        <img
-          className="profile-avatar"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fDE?q=80&w=2080&auto=format&fit=crop"
-          alt="User profile"
-        />
-      </div>
-    </div>
-  </header>
-);
 
-
-// Main Medical Record Form Component
-const MedicalRecordForm = () => {
-  // State to hold form data
-  const [formData, setFormData] = useState({
-    parentName: '',
-    childName: '',
-    height: '150',
-    allergies: '',
-    chronicDiseases: '',
-    vision: '',
-    additionalInfo: ''
-  });
-
-  // Handler for input changes
-  const handleChange = (e: { target: { name: string; value: any; }; }) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
+//Medical Record Form Component
+//TODO: Missing Hearing tab
+const MedicalRecordForm = ({ handleInputChange, handleSubmit, isLoading, error, formData }: MedicalRecordFormProps) => {
+  const stored = localStorage.getItem('accountDetail');
+  let parentData: AccountDetail | null=null
+  if(stored){
+    parentData = JSON.parse(stored);
+  }else{
+    console.warn('No account detail found in local storage')
+  }
+  const parentName=parentData?.fullName;
+  const childName=parentData?.studentName
   return (
     <div className="medical-record-form">
       <div className="form-title-container">
@@ -104,6 +60,8 @@ const MedicalRecordForm = () => {
       </div>
       
       {/* Form Fields */}
+      {error && <div className='error-message'>{error}</div>}
+      <form onSubmit={handleSubmit}>
       <div className="form-grid">
         <div className="input-group">
           <label htmlFor="parentName" className="input-label">Parent Name</label>
@@ -111,10 +69,11 @@ const MedicalRecordForm = () => {
             type="text"
             id="parentName"
             name="parentName"
-            value={formData.parentName}
-            onChange={handleChange}
+            value={parentName}
+            onChange={handleInputChange}
             placeholder="Enter parent's full name"
             className="input-field"
+            readOnly
           />
         </div>
       
@@ -124,10 +83,11 @@ const MedicalRecordForm = () => {
             type="text"
             id="childName"
             name="childName"
-            value={formData.childName}
-            onChange={handleChange}
+            value={childName}
+            onChange={handleInputChange}
             placeholder="Enter child's full name"
             className="input-field"
+            readOnly
           />
         </div>
       </div>
@@ -141,7 +101,7 @@ const MedicalRecordForm = () => {
           name="height"
           value={formData.height}
           placeholder='Enter height in cm'
-          onChange={handleChange}
+          onChange={handleInputChange}
           className="input-field"
         />
         <span className="input-unit">cm</span>
@@ -155,7 +115,7 @@ const MedicalRecordForm = () => {
           name='allergies'
           rows={4}
           value={formData.allergies}
-          onChange={handleChange}
+          onChange={handleInputChange}
           placeholder="Please list any known allergies, including food allergies, environmental allergies, or medication allergies. Include severity and symptoms if known."
           className="textarea-field"
         />
@@ -168,7 +128,7 @@ const MedicalRecordForm = () => {
           name='chronicDiseases'
           rows={4}
           value={formData.chronicDiseases}
-          onChange={handleChange}
+          onChange={handleInputChange}
           placeholder="Please list any chronic conditions such as asthma, diabetes, epilepsy, or other ongoing medical conditions. Include current treatments or medications."
           className="textarea-field"
         />
@@ -181,41 +141,36 @@ const MedicalRecordForm = () => {
           name='vision'
           rows={4}
           value={formData.vision}
-          onChange={handleChange}
+          onChange={handleInputChange}
           placeholder="Please describe any vision issues, corrective lenses needed, or visual impairments. Include prescription details if applicable."
           className="textarea-field"
         />
       </FormSection>
-      
-      <FormSection icon={<IconInfo className="icon-small icon-info"/>} title="Additional Medical Information"
+
+      <FormSection icon={<IconInfo className="icon-small icon-eye" />} title="Hearing"
         formSectionClassName='form-section' headerClassName='form-section-header' titleClassName='form-section-title'>
         <textarea
-          id='additionalInfo'
-          name='additionalInfo'
+          id='hearng'
+          name='hearing'
           rows={4}
-          value={formData.additionalInfo}
-          onChange={handleChange}
-          placeholder="Please include any other relevant medical information, current medications, recent surgeries, or special medical needs that the school should be aware of."
+          value={formData.hearing}
+          onChange={handleInputChange}
+          placeholder="Please describe any hearing issues. Include prescription details if applicable."
           className="textarea-field"
         />
       </FormSection>
 
       <div className="form-actions">
-        <button type="button" className="button button-secondary">
-          <IconSave className='icon-small' />
-          Save as Draft
-        </button>
-        <button type="submit" className="button button-primary">
+        <button type="submit" className="button button-primary" disabled={isLoading}>
           <IconPaperPlane className="icon-small"/>
           Save Medical Record
         </button>
       </div>
+      </form>
     </div>
+    
+      
   );
 };
 
-
-
-
-
-
+export default MedicalRecordForm;
