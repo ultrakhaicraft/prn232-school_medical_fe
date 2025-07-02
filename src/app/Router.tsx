@@ -5,15 +5,17 @@ import { Spinner } from '../components/spinner';
 
 
 
-// Lazy load all the pages/routes
-const Homepage = React.lazy(() => import('../app/pages/GuestHome-page'));
-const Login = React.lazy(() => import('../app/pages/Login-page'));
-const Register = React.lazy(() => import('../app/pages/Register-page'));
-const ParentHomepage = React.lazy(() => import('../app/pages/ParentHome-page'));
-const StudentHomepage = React.lazy(() => import('../app/pages/StudentHome-page'));
-const NurseHomepage = React.lazy(() => import('../app/pages/NurseHome-page'));
-const CreateStudentHealthRecordForm = React.lazy(() => import('../app/pages/CreateStudentHealthRecord-page'));
 
+// Lazy load all the pages/routes
+const Homepage = React.lazy(() => import('../app/pages/guest_area/GuestHome-page'));
+const Login = React.lazy(() => import('../app/pages/guest_area/Login-page'));
+const Register = React.lazy(() => import('../app/pages/guest_area/Register-page'));
+const ParentHomepage = React.lazy(() => import('../app/pages/parent_area/ParentHome-page'));
+const StudentHomepage = React.lazy(() => import('../app/pages/student_area/StudentHome-page'));
+const NurseHomepage = React.lazy(() => import('../app/pages/nurse_area/NurseHome-page'));
+const CreateStudentHealthRecordForm = React.lazy(() => import('../app/pages/parent_area/CreateStudentHealthRecord-page'));
+const UpdateStudentHealthRecordPage=React.lazy(()=> import('../app/pages/parent_area/UpdateStudentHealthRecord-page'));
+const ViewStudentHealthRecordPage =React.lazy(()=> import('../app/pages/parent_area/ViewStudentHealthRecord-page'));
 
 // A simple component to center the spinner
 const FullPageSpinner = () => (
@@ -40,10 +42,10 @@ export const AppRouter = () => {
             <Route path="/studentHomepage" element={<StudentHomepage/>}/>
             <Route path="/nurseHomepage" element={<NurseHomepage/>} /> 
             <Route path="/createStudentHealthRecord" element={<CreateStudentHealthRecordForm />} />
+            <Route path="/viewStudentHealthRecord" element={<ViewStudentHealthRecordPage />} />
+            <Route path="/updateStudentHealthRecord" element={<UpdateStudentHealthRecordPage />} />
             
-            
-            
-            {/* Add other public routes here */}
+           
 
             {/* Protected Routes can be added here */}
             {/* Example:

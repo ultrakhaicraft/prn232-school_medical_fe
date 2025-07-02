@@ -1,7 +1,7 @@
 
-import Footer from '../../components/Landing_Page/footer';
-import HomepageNavBar from '../../components/Landing_Page/homepage-nav-bar'; 
-import '../../app/CSS/GuestHomepage.css'
+import Footer from '../../../components/Landing_Page/footer';
+import HomepageNavBar from '../../../components/Landing_Page/homepage-nav-bar'; 
+import '../../../app/CSS/GuestHomepage.css'
 
 function Homepage() {
   return (

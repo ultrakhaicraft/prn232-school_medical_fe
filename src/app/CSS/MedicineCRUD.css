@@ -8,7 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.app-shell {
+.main-content {
   background-color: #f8fafc;
   min-height: 100vh;
   color: #1f2937;

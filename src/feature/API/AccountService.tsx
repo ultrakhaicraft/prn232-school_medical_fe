@@ -24,6 +24,10 @@ export interface AccountView {
 export interface AccountDetail extends AccountView {
   phoneNumber: string;
   address: string;
+  studentId: string; //String but can be null or empty depend on the response
+  studentName: string;
+  parentId: string;
+  parentName: string;
 }
 
 
@@ -38,6 +42,8 @@ export interface AccountCreationData{
   parentId: string;
 
 }
+
+
 
 
 export interface AccountUpdateData extends AccountCreationData {}
@@ -86,10 +92,7 @@ export const accountService = {
    * No Pagination
    */
   getDetailById: async (userId: string): Promise<AccountDetail> => {
-    const response = await apiClient.get<RawApiResponse<AccountDetail>>('/account',{
-      params: {userId}
-    });
-
+    const response = await apiClient.get<RawApiResponse<AccountDetail>>(`/account/${userId}`);
     return response.data.data;
   },
 

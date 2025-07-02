@@ -32,7 +32,6 @@ export interface StudentHealthRecordDetail extends StudentHealthRecordView {
 
 
 export interface StudentHealthRecordCreationData{
-    id: string;     
     studentName: string;
     studentId: string;   
     createdBy: string;
@@ -41,7 +40,7 @@ export interface StudentHealthRecordCreationData{
     chronicDiseases : string;
     vision: string;
     hearing: string;
-    status: string | null;
+    
 }
 
 
@@ -67,7 +66,7 @@ interface RawApiResponse<T> {
 // --- API Service Object ---
 
 
-export const accountService = {
+export const StudentHealthRecordService = {
 
 
   getAll: async (params: GetAllStudentHealthRecordsParams): Promise<PaginatedResponse<StudentHealthRecordView>> => {
@@ -82,18 +81,33 @@ export const accountService = {
 
  
   getDetailById: async (studentHealthRecordId: string): Promise<StudentHealthRecordDetail> => {
-    const response = await apiClient.get<RawApiResponse<StudentHealthRecordDetail>>('/student-health-record',{
-      params: {studentHealthRecordId}
-    });
+    const response = await apiClient.get<RawApiResponse<StudentHealthRecordDetail>>
+    (`/student-health-record/${studentHealthRecordId}`);
 
     return response.data.data;
   },
 
+  getDetailByStudentId: async (studentId: string): Promise<StudentHealthRecordDetail>=>{
+    const response = await apiClient.get<RawApiResponse<StudentHealthRecordDetail>>
+    (`/student-health-record/from-student/${studentId}`)
 
+    return response.data.data;
+  },
   
 
   create: async (accountData: StudentHealthRecordCreationData): Promise<string> => {
-    const response = await apiClient.post<RawApiResponse<string>>('/student-health-record', accountData);
+    const token = localStorage.getItem("jwtToken"); 
+
+    const response = await apiClient.post<RawApiResponse<string>>(
+      '/student-health-record',
+      accountData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send JWT in Authorization header
+        },
+      }
+    );
+
     return response.data.data;
   },
 
