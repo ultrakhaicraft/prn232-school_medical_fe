@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "../../CSS//MedicineCRUD.css"
 import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView } from '../../../components/IconList';
-import SideNav from '../../../components/StaffSideNav';
-
+import { MedicineService, Medicine, PaginatedResponse } from '../../../feature/API/MedicineService';
 
 //Vài điều khi code phần này
 //Gọi các API từ Backend thì phải tạo "MedicineService" trong feature/API, làm giống như các Service khác
@@ -11,27 +10,26 @@ import SideNav from '../../../components/StaffSideNav';
 
 // Main App Component
 export default function MedicineCRUDPage() {
+  const [medicineData, setMedicineData] = useState<Medicine[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10;
 
-  const [medicineData,setMedicineData]=useState([]);
+  useEffect(() => {
+    MedicineService.getAll({ PageIndex: currentPage, PageSize: pageSize })
+      .then((res: PaginatedResponse<Medicine>) => {
+        setMedicineData(res.data);
+        setTotalPages(res.totalPages);
+      })
+      .catch(console.error);
+  }, [currentPage]);
 
-
-  //Gọi api tại đây rồi setMedicineData
-
-  return (
-    <div className="main-content">
-      <div className="dashboard-layout">
-      <SideNav />
-      <main className="dashboard-main">
-        <MedicineCRUD />
-      </main>
-    </div>
-    </div>
-  );
+  return <MedicineCRUD medicineData={medicineData} currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />;
 }
 
 // All Sub component of the page
 // Main CRUD component for medicines
-const MedicineCRUD = () => {
+const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPage }: { medicineData: Medicine[], currentPage: number, totalPages: number, setCurrentPage: (page: number) => void }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -44,7 +42,6 @@ const MedicineCRUD = () => {
           Create Medicine
         </button>
       </div>
-
       <div className="crud-table-wrapper">
         <table className="crud-table">
           <thead>
@@ -60,7 +57,7 @@ const MedicineCRUD = () => {
               <tr key={medicine.id}>
                 <td>{medicine.name}</td>
                 <td>{medicine.description}</td>
-                <td><StatusBadge status={medicine.status} /></td>
+                <td><StatusBadge status={medicine.isAvailable ? 'Active' : 'Inactive'} /></td>
                 <td>
                   <div className="action-buttons">
                     <button className="action-button"><IconView /></button>
@@ -73,46 +70,42 @@ const MedicineCRUD = () => {
           </tbody>
         </table>
       </div>
-      
-      <Pagination />
+      <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
     </div>
   );
 }
 
-interface StatusBadge{
+interface StatusBadge {
   status: string;
 }
 
 // Status Badge Component
-const StatusBadge = ({status}:StatusBadge) => {
+const StatusBadge = ({ status }: StatusBadge) => {
   const statusClass = status === 'Active' ? 'status-badge-active' : 'status-badge-inactive';
   return <span className={`status-badge ${statusClass}`}>{status}</span>;
 }
 
 // Pagination Component
-const Pagination = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 3;
-
-    return (
-        <nav className="pagination-container">
-            <button className="pagination-arrow" disabled={currentPage === 1}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                 <button 
-                    key={page} 
-                    className={`pagination-number ${currentPage === page ? 'active' : ''}`}
-                    onClick={() => setCurrentPage(page)}
-                >
-                    {page}
-                </button>
-            ))}
-             <button className="pagination-arrow" disabled={currentPage === totalPages}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-        </nav>
-    );
+const Pagination = ({ currentPage, totalPages, setCurrentPage }: { currentPage: number, totalPages: number, setCurrentPage: (page: number) => void }) => {
+  return (
+    <nav className="pagination-container">
+      <button className="pagination-arrow" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+        <button
+          key={page}
+          className={`pagination-number ${currentPage === page ? 'active' : ''}`}
+          onClick={() => setCurrentPage(page)}
+        >
+          {page}
+        </button>
+      ))}
+      <button className="pagination-arrow" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </nav>
+  );
 };
 
 

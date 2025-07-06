@@ -1,16 +1,51 @@
 import SideNav from '../../../components/StaffSideNav';
-
-
+import { IconMedicine, IconIncidentReport } from '../../../components/IconList';
+import { useState } from 'react';
+import MedicineCRUDPage from './MedicineCRUD-page';
+import '../../CSS/MedicineCRUD.css';
 
 export default function NurseHomePage() {
-   
-    //Dùng account Service để gọi API Get Account Detail lấy account detail rồi bỏ vào local storage
-    
+    const [activeItem, setActiveItem] = useState('Home');
+
+    let mainContent;
+    if (activeItem === 'Home') {
+        mainContent = (
+            <div>
+                <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '2rem' }}>Welcome, Nurse!</h1>
+                <div style={{ display: 'flex', gap: '2rem' }}>
+                    <div
+                        className="crud-container"
+                        style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                        onClick={() => setActiveItem('Medicine')}
+                    >
+                        <IconMedicine className="icon-large" />
+                        <h2 style={{ margin: '1rem 0 0.5rem 0' }}>Manage Medicines</h2>
+                        <p style={{ color: '#6b7280', textAlign: 'center' }}>View, add, edit, and remove medicines in the school inventory.</p>
+                    </div>
+                    <div
+                        className="crud-container"
+                        style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                        // You can add onClick for Incident if you implement it
+                    >
+                        <IconIncidentReport className="icon-large" />
+                        <h2 style={{ margin: '1rem 0 0.5rem 0' }}>Manage Incident Records</h2>
+                        <p style={{ color: '#6b7280', textAlign: 'center' }}>Log and review student incident records and reports.</p>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (activeItem === 'Medicine') {
+        mainContent = <MedicineCRUDPage />;
+    } else {
+        mainContent = <div style={{ padding: '2rem' }}>Feature coming soon.</div>;
+    }
+
     return (
-        <div className="normal-page">
-            <SideNav/>
-            <p>NursePage</p>
+        <div style={{ display: 'flex', minHeight: '100vh' }}>
+            <SideNav activeItem={activeItem} onSelect={setActiveItem} />
+            <div style={{ flex: 1, padding: '2rem' }}>
+                {mainContent}
+            </div>
         </div>
-        
     );
 }

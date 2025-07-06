@@ -17,11 +17,14 @@ function Welcome({ name, childName, avatarSrc, userType }: WelcomeProps) {
         <p className="welcome-info">
           {userType === 'student' ? (
             <span className="student-icon" role="img" aria-label="student icon">👨‍🎓</span>
+          ) : userType === 'nurse' ? (
+            <span className="nurse-icon" role="img" aria-label="nurse icon">🩺</span>
           ) : (
             <span className="parent-icon" role="img" aria-label="parent icon">👩‍👧</span>
           )}
-          ️{userType === 'student' ? '' : 'Parent'} of: <span className="child-name">{childName}</span>          
-          {userType === 'student' && <span>Class of 10A</span>}
+          {userType === 'student' && 'Class of 10A'}
+          {userType === 'parent' && <> 0Parent of: <span className="child-name">{childName}</span></>}
+          {userType === 'nurse' && <span>School Nurse</span>}
         </p>
       </div>
     </section>

@@ -16,6 +16,8 @@ const NurseHomepage = React.lazy(() => import('../app/pages/nurse_area/NurseHome
 const CreateStudentHealthRecordForm = React.lazy(() => import('../app/pages/parent_area/CreateStudentHealthRecord-page'));
 const UpdateStudentHealthRecordPage=React.lazy(()=> import('../app/pages/parent_area/UpdateStudentHealthRecord-page'));
 const ViewStudentHealthRecordPage =React.lazy(()=> import('../app/pages/parent_area/ViewStudentHealthRecord-page'));
+const MedicineCRUDPage = React.lazy(() => import('../app/pages/nurse_area/MedicineCRUD-page'));
+const IncidentRecordCRUDPage = React.lazy(() => import('../app/pages/nurse_area/IncidentRecordCRUD-page'));
 
 // A simple component to center the spinner
 const FullPageSpinner = () => (
@@ -44,6 +46,8 @@ export const AppRouter = () => {
             <Route path="/createStudentHealthRecord" element={<CreateStudentHealthRecordForm />} />
             <Route path="/viewStudentHealthRecord" element={<ViewStudentHealthRecordPage />} />
             <Route path="/updateStudentHealthRecord" element={<UpdateStudentHealthRecordPage />} />
+            <Route path="/nurse/medicines" element={<MedicineCRUDPage />} />
+            <Route path="/nurse/incidents" element={<IncidentRecordCRUDPage />} />
             
            
 
