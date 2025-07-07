@@ -39,4 +39,9 @@ export const MedicineService = {
     const response = await apiClient.get<RawApiResponse<PaginatedResponse<Medicine>>>('/medicine', { params });
     return response.data.data;
   },
+
+  getById: async (id: string): Promise<Medicine> => {
+    const response = await apiClient.get<RawApiResponse<Medicine>>(`/medicine/${id}`);
+    return response.data.data;
+  },
 }; 

@@ -3,10 +3,14 @@ import React, { useState, useEffect } from 'react';
 import "../../CSS/IncidentRecordCRUD.css"
 import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView } from '../../../components/IconList';
 import { IncidentRecordService, IncidentRecord } from '../../../feature/API/IncidentRecordService';
+import { IncidentRecordView } from '../../../components/IncidentRecord/IncidentRecordView';
 
 // Main App Component
 export default function IncidentRecordCRUDPage() {
   const [incidentData, setIncidentData] = useState<IncidentRecord[]>([]);
+  const [selectedIncident, setSelectedIncident] = useState<IncidentRecord | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     IncidentRecordService.getAll()
@@ -16,12 +20,45 @@ export default function IncidentRecordCRUDPage() {
       .catch(console.error);
   }, []);
 
-  return <IncidentRecordCRUD incidentData={incidentData} />;
+  const handleViewIncident = async (id: string) => {
+    setLoading(true);
+    try {
+      const incident = await IncidentRecordService.getById(id);
+      setSelectedIncident(incident);
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error fetching incident details:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedIncident(null);
+  };
+
+  return (
+    <>
+      <IncidentRecordCRUD 
+        incidentData={incidentData}
+        onViewIncident={handleViewIncident}
+        loading={loading}
+      />
+      {showModal && selectedIncident && (
+        <IncidentRecordView 
+          incidentRecord={selectedIncident} 
+          isOpen={showModal}
+          onClose={handleCloseModal} 
+        />
+      )}
+    </>
+  );
 }
 
 // All Sub component of the page
 // Main CRUD component for incident records
-const IncidentRecordCRUD = ({ incidentData = [] }: { incidentData: IncidentRecord[] }) => {
+const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, loading }: { incidentData: IncidentRecord[], onViewIncident: (id: string) => void, loading: boolean }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -39,7 +76,7 @@ const IncidentRecordCRUD = ({ incidentData = [] }: { incidentData: IncidentRecor
           <thead>
             <tr>
               <th>ID</th>
-              <th>Student</th>
+              <th>Student ID</th>
               <th>Incident Type</th>
               <th>Date Occurred</th>
               <th>Status</th>
@@ -50,13 +87,15 @@ const IncidentRecordCRUD = ({ incidentData = [] }: { incidentData: IncidentRecor
             {incidentData.map(incident => (
               <tr key={incident.id}>
                 <td>{incident.id}</td>
-                <td>{incident.studentName}</td>
+                <td>{incident.studentId}</td>
                 <td>{incident.incidentType}</td>
                 <td>{new Date(incident.dateOccurred).toLocaleDateString()}</td>
                 <td><StatusBadge status={incident.status} /></td>
                 <td>
                   <div className="action-buttons">
-                    <button className="action-button"><IconView /></button>
+                    <button className="action-button" onClick={() => onViewIncident(incident.id)} disabled={loading}>
+                      <IconView />
+                    </button>
                     <button className="action-button"><IconEdit /></button>
                     <button className="action-button action-delete"><IconDelete /></button>
                   </div>

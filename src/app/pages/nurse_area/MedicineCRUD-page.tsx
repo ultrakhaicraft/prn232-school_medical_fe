@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import "../../CSS//MedicineCRUD.css"
 import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView } from '../../../components/IconList';
 import { MedicineService, Medicine, PaginatedResponse } from '../../../feature/API/MedicineService';
+import { MedicineView } from '../../../components/Medicine/MedicineView';
 
 //Vài điều khi code phần này
 //Gọi các API từ Backend thì phải tạo "MedicineService" trong feature/API, làm giống như các Service khác
@@ -13,6 +14,9 @@ export default function MedicineCRUDPage() {
   const [medicineData, setMedicineData] = useState<Medicine[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const pageSize = 10;
 
   useEffect(() => {
@@ -24,12 +28,48 @@ export default function MedicineCRUDPage() {
       .catch(console.error);
   }, [currentPage]);
 
-  return <MedicineCRUD medicineData={medicineData} currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />;
+  const handleViewMedicine = async (id: string) => {
+    setLoading(true);
+    try {
+      const medicine = await MedicineService.getById(id);
+      setSelectedMedicine(medicine);
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error fetching medicine details:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedMedicine(null);
+  };
+
+  return (
+    <>
+      <MedicineCRUD 
+        medicineData={medicineData} 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        setCurrentPage={setCurrentPage}
+        onViewMedicine={handleViewMedicine}
+        loading={loading}
+      />
+      {showModal && selectedMedicine && (
+        <MedicineView 
+          medicine={selectedMedicine} 
+          isOpen={showModal}
+          onClose={handleCloseModal} 
+        />
+      )}
+    </>
+  );
 }
 
 // All Sub component of the page
 // Main CRUD component for medicines
-const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPage }: { medicineData: Medicine[], currentPage: number, totalPages: number, setCurrentPage: (page: number) => void }) => {
+const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPage, onViewMedicine, loading }: { medicineData: Medicine[], currentPage: number, totalPages: number, setCurrentPage: (page: number) => void, onViewMedicine: (id: string) => void, loading: boolean }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -60,7 +100,9 @@ const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPa
                 <td><StatusBadge status={medicine.isAvailable ? 'Active' : 'Inactive'} /></td>
                 <td>
                   <div className="action-buttons">
-                    <button className="action-button"><IconView /></button>
+                    <button className="action-button" onClick={() => onViewMedicine(medicine.id)} disabled={loading}>
+                      <IconView />
+                    </button>
                     <button className="action-button"><IconEdit /></button>
                     <button className="action-button action-delete"><IconDelete /></button>
                   </div>

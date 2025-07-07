@@ -3,8 +3,10 @@ import apiClient from '../ApiClient';
 export interface IncidentRecord {
   id: string;
   studentId: string;
-  studentName: string;
+  studentName?: string;
+  handleBy: string;
   incidentType: string;
+  description: string;
   dateOccurred: string;
   status: string;
 }
