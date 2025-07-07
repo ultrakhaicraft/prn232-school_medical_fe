@@ -3,6 +3,7 @@ import { IconMedicine, IconIncidentReport } from '../../../components/IconList';
 import { useState } from 'react';
 import MedicineCRUDPage from './MedicineCRUD-page';
 import '../../CSS/MedicineCRUD.css';
+import IncidentRecordCRUDPage from './IncidentRecordCRUD-page';
 
 export default function NurseHomePage() {
     const [activeItem, setActiveItem] = useState('Home');
@@ -36,6 +37,8 @@ export default function NurseHomePage() {
         );
     } else if (activeItem === 'Medicine') {
         mainContent = <MedicineCRUDPage />;
+    } else if (activeItem === 'Incident Report') {
+        mainContent = <IncidentRecordCRUDPage />;
     } else {
         mainContent = <div style={{ padding: '2rem' }}>Feature coming soon.</div>;
     }

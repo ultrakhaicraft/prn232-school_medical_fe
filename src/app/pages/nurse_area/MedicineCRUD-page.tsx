@@ -37,7 +37,7 @@ const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPa
           <h2 className="crud-title">Medicine CRUD</h2>
           <p className="crud-subtitle">Manage medicine inventory and records</p>
         </div>
-        <button className="button button-primary">
+        <button className="button button-primary button-small">
           <IconPlus />
           Create Medicine
         </button>
