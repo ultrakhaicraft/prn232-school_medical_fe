@@ -4,6 +4,7 @@ import "../../CSS//MedicineCRUD.css"
 import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView } from '../../../components/IconList';
 import { MedicineService, Medicine, PaginatedResponse } from '../../../feature/API/MedicineService';
 import { MedicineView } from '../../../components/Medicine/MedicineView';
+import { ConfirmationModal } from '../../../components/ConfirmationModal';
 
 //Vài điều khi code phần này
 //Gọi các API từ Backend thì phải tạo "MedicineService" trong feature/API, làm giống như các Service khác
@@ -17,15 +18,22 @@ export default function MedicineCRUDPage() {
   const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [medicineToDelete, setMedicineToDelete] = useState<Medicine | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const pageSize = 10;
 
-  useEffect(() => {
+  const loadMedicines = () => {
     MedicineService.getAll({ PageIndex: currentPage, PageSize: pageSize })
       .then((res: PaginatedResponse<Medicine>) => {
         setMedicineData(res.data);
         setTotalPages(res.totalPages);
       })
       .catch(console.error);
+  };
+
+  useEffect(() => {
+    loadMedicines();
   }, [currentPage]);
 
   const handleViewMedicine = async (id: string) => {
@@ -46,6 +54,32 @@ export default function MedicineCRUDPage() {
     setSelectedMedicine(null);
   };
 
+  const handleDeleteClick = (medicine: Medicine) => {
+    setMedicineToDelete(medicine);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!medicineToDelete) return;
+    
+    setDeleteLoading(true);
+    try {
+      await MedicineService.delete(medicineToDelete.id);
+      setShowDeleteConfirm(false);
+      setMedicineToDelete(null);
+      loadMedicines(); // Reload the table
+    } catch (error) {
+      console.error('Error deleting medicine:', error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
+    setMedicineToDelete(null);
+  };
+
   return (
     <>
       <MedicineCRUD 
@@ -54,6 +88,7 @@ export default function MedicineCRUDPage() {
         totalPages={totalPages} 
         setCurrentPage={setCurrentPage}
         onViewMedicine={handleViewMedicine}
+        onDeleteMedicine={handleDeleteClick}
         loading={loading}
       />
       {showModal && selectedMedicine && (
@@ -63,13 +98,24 @@ export default function MedicineCRUDPage() {
           onClose={handleCloseModal} 
         />
       )}
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Medicine"
+        message={`Are you sure you want to delete "${medicineToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isLoading={deleteLoading}
+        type="danger"
+      />
     </>
   );
 }
 
 // All Sub component of the page
 // Main CRUD component for medicines
-const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPage, onViewMedicine, loading }: { medicineData: Medicine[], currentPage: number, totalPages: number, setCurrentPage: (page: number) => void, onViewMedicine: (id: string) => void, loading: boolean }) => {
+const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPage, onViewMedicine, onDeleteMedicine, loading }: { medicineData: Medicine[], currentPage: number, totalPages: number, setCurrentPage: (page: number) => void, onViewMedicine: (id: string) => void, onDeleteMedicine: (medicine: Medicine) => void, loading: boolean }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -104,7 +150,9 @@ const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPa
                       <IconView />
                     </button>
                     <button className="action-button"><IconEdit /></button>
-                    <button className="action-button action-delete"><IconDelete /></button>
+                    <button className="action-button action-delete" onClick={() => onDeleteMedicine(medicine)} disabled={loading}>
+                      <IconDelete />
+                    </button>
                   </div>
                 </td>
               </tr>

@@ -44,4 +44,9 @@ export const MedicineService = {
     const response = await apiClient.get<RawApiResponse<Medicine>>(`/medicine/${id}`);
     return response.data.data;
   },
+
+  delete: async (id: string): Promise<boolean> => {
+    const response = await apiClient.delete<RawApiResponse<boolean>>(`/medicine/${id}`);
+    return response.data.data;
+  },
 }; 

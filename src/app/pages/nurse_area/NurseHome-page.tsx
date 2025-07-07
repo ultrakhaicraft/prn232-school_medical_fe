@@ -26,7 +26,7 @@ export default function NurseHomePage() {
                     <div
                         className="crud-container"
                         style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-                        // You can add onClick for Incident if you implement it
+                        onClick={() => setActiveItem('Incident Report')}
                     >
                         <IconIncidentReport className="icon-large" />
                         <h2 style={{ margin: '1rem 0 0.5rem 0' }}>Manage Incident Records</h2>

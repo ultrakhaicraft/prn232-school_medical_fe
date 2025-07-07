@@ -57,7 +57,8 @@ export const IncidentRecordService = {
     return response.data.data;
   },
 
-  delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/incident-record/${id}`);
+  delete: async (id: string): Promise<boolean> => {
+    const response = await apiClient.delete<RawApiResponse<boolean>>(`/incident-record/${id}`);
+    return response.data.data;
   },
 };

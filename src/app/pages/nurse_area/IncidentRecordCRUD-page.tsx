@@ -4,6 +4,7 @@ import "../../CSS/IncidentRecordCRUD.css"
 import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView } from '../../../components/IconList';
 import { IncidentRecordService, IncidentRecord } from '../../../feature/API/IncidentRecordService';
 import { IncidentRecordView } from '../../../components/IncidentRecord/IncidentRecordView';
+import { ConfirmationModal } from '../../../components/ConfirmationModal';
 
 // Main App Component
 export default function IncidentRecordCRUDPage() {
@@ -11,13 +12,20 @@ export default function IncidentRecordCRUDPage() {
   const [selectedIncident, setSelectedIncident] = useState<IncidentRecord | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [incidentToDelete, setIncidentToDelete] = useState<IncidentRecord | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
-  useEffect(() => {
+  const loadIncidents = () => {
     IncidentRecordService.getAll()
       .then((res: IncidentRecord[]) => {
         setIncidentData(res);
       })
       .catch(console.error);
+  };
+
+  useEffect(() => {
+    loadIncidents();
   }, []);
 
   const handleViewIncident = async (id: string) => {
@@ -38,11 +46,38 @@ export default function IncidentRecordCRUDPage() {
     setSelectedIncident(null);
   };
 
+  const handleDeleteClick = (incident: IncidentRecord) => {
+    setIncidentToDelete(incident);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!incidentToDelete) return;
+    
+    setDeleteLoading(true);
+    try {
+      await IncidentRecordService.delete(incidentToDelete.id);
+      setShowDeleteConfirm(false);
+      setIncidentToDelete(null);
+      loadIncidents(); // Reload the table
+    } catch (error) {
+      console.error('Error deleting incident record:', error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
+    setIncidentToDelete(null);
+  };
+
   return (
     <>
       <IncidentRecordCRUD 
         incidentData={incidentData}
         onViewIncident={handleViewIncident}
+        onDeleteIncident={handleDeleteClick}
         loading={loading}
       />
       {showModal && selectedIncident && (
@@ -52,13 +87,24 @@ export default function IncidentRecordCRUDPage() {
           onClose={handleCloseModal} 
         />
       )}
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Incident Record"
+        message={`Are you sure you want to delete incident record "${incidentToDelete?.id}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isLoading={deleteLoading}
+        type="danger"
+      />
     </>
   );
 }
 
 // All Sub component of the page
 // Main CRUD component for incident records
-const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, loading }: { incidentData: IncidentRecord[], onViewIncident: (id: string) => void, loading: boolean }) => {
+const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteIncident, loading }: { incidentData: IncidentRecord[], onViewIncident: (id: string) => void, onDeleteIncident: (incident: IncidentRecord) => void, loading: boolean }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -97,7 +143,9 @@ const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, loading }: { in
                       <IconView />
                     </button>
                     <button className="action-button"><IconEdit /></button>
-                    <button className="action-button action-delete"><IconDelete /></button>
+                    <button className="action-button action-delete" onClick={() => onDeleteIncident(incident)} disabled={loading}>
+                      <IconDelete />
+                    </button>
                   </div>
                 </td>
               </tr>
