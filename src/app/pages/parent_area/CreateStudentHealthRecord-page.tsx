@@ -48,6 +48,7 @@ export default function CreateStudentHealthRecordPage() {
       const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true)
+        console.log("Start submitting");
         try{
           const stored = localStorage.getItem('accountDetail');
           let parentData: AccountDetail | null=null
@@ -75,14 +76,18 @@ export default function CreateStudentHealthRecordPage() {
           };
 
           await StudentHealthRecordService.create(payload);
+
+          console.log("If it reach this, then the response is correct")
           setToast({
             isVisible: true,
             message: 'Student health record created successfully!',
           type: 'success'
           });
           setIsLoading(false)
+          //Wait for 3 seconds
 
           //Navigate back to View
+          navigate("/viewStudentHealthRecord")
 
         }catch(err:any){
           console.error(err);

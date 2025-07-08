@@ -8,6 +8,7 @@ import {
   IconPaperPlane,  
 } from '../../components/IconList'; // Importing icons from a separate file
 import { StudentHealthRecordDetail } from '../../feature/API/StudentHealthRecordService';
+import EmptyRecordView from './EmptyRecordView';
 
 
 interface MedicalRecordViewProps {
@@ -23,6 +24,9 @@ const MedicalRecordForm = ({error, viewData, parentName }: MedicalRecordViewProp
   
  
   //Check if the storedForm is empty, if yes return the empty record form
+  if (!viewData) {
+    return <EmptyRecordView/>
+  }
  
   return (
     <div className="medical-record-form">

@@ -166,3 +166,10 @@ body, html {
   text-decoration: none;
   font-size: 1.2rem;
 }
+
+
+/* Icons */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }

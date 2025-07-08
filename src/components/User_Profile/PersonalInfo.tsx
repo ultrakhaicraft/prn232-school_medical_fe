@@ -1,42 +1,49 @@
 
+import { useState } from 'react';
 import { 
   IconEdit,
   IconPerson
 } from '../../components/IconList';
+import { AccountDetail, AccountUpdateData } from '../../feature/API/AccountService';
+import { IPersonalInfo } from '../../app/pages/ParentUserProfile-Page';
+
+interface PersonalInfoProp{
+    account: AccountDetail;
+    onUpdate:(PersonalInfo:IPersonalInfo) => void;
+    isEditMode: boolean;
+    setIsEditMode:React.Dispatch<React.SetStateAction<boolean>>;
+    formData: IPersonalInfo;
+    setFormData: React.Dispatch<React.SetStateAction<IPersonalInfo>>;
+}
 
 
-const PersonalInfo = ({ account, onUpdate }) => {
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [formData, setFormData] = useState({
-        fullName: account.fullName,
-        email: account.email,
-        phone: account.phone,
-        address: account.address,
-        dateOfBirth: account.dateOfBirth
-    });
+const PersonalInfo = ({ account, onUpdate,isEditMode,setIsEditMode,formData,setFormData} : PersonalInfoProp) => {
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSave = () => {
-        accountService.update(formData)
-            .then(updatedAccount => {
-                onUpdate(updatedAccount); // Update parent state
-                setIsEditMode(false); // Exit edit mode
-            })
-            .catch(err => console.error("Update failed", err));
+    const handleSaveChanges = (e: React.FormEvent) => {
+    e.preventDefault(); // prevent default form submission
+    const newData: IPersonalInfo = {
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
     };
+    onUpdate(newData);
+};
+
+   
     
     const handleCancel = () => {
         // Reset form to original account data
         setFormData({
             fullName: account.fullName,
             email: account.email,
-            phone: account.phone,
+            phone: account.phoneNumber,
             address: account.address,
-            dateOfBirth: account.dateOfBirth
         });
         setIsEditMode(false);
     };
@@ -44,16 +51,16 @@ const PersonalInfo = ({ account, onUpdate }) => {
     return (
         <div className="info-card">
             <div className="info-card-header">
-                <h2 className="info-card-title"><IconPerson /> Personal Information</h2>
+                <h2 className="info-card-title"><IconPerson className="icon" /> Personal Information</h2>
                 {!isEditMode && (
                     <button className="edit-button" onClick={() => setIsEditMode(true)}>
-                        <IconEdit /> Edit
+                        <IconEdit className="icon" /> Edit
                     </button>
                 )}
             </div>
             
             {isEditMode ? (
-                <div>
+                <form onSubmit={handleSaveChanges}>
                     <div className="info-grid">
                         <div className="info-item">
                             <label className="input-label" htmlFor="fullName">Full Name</label>
@@ -66,11 +73,7 @@ const PersonalInfo = ({ account, onUpdate }) => {
                         <div className="info-item">
                             <label className="input-label" htmlFor="phone">Phone Number</label>
                             <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleInputChange} className="input-field" />
-                        </div>
-                        <div className="info-item">
-                            <label className="input-label" htmlFor="dateOfBirth">Date of Birth</label>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} className="input-field" />
-                        </div>
+                        </div>              
                         <div className="info-item full-width">
                             <label className="input-label" htmlFor="address">Address</label>
                             <input type="text" id="address" name="address" value={formData.address} onChange={handleInputChange} className="input-field" />
@@ -78,9 +81,9 @@ const PersonalInfo = ({ account, onUpdate }) => {
                     </div>
                     <div className="form-actions">
                         <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
-                        <button className="button button-primary" onClick={handleSave}>Save Changes</button>
+                        <button className="button button-primary" type='submit'>Save Changes</button>
                     </div>
-                </div>
+                </form>
             ) : (
                 <div className="info-grid">
                     <div className="info-item">
@@ -93,7 +96,7 @@ const PersonalInfo = ({ account, onUpdate }) => {
                     </div>
                     <div className="info-item">
                         <label>Phone Number</label>
-                        <p>{account.phone}</p>
+                        <p>{account.phoneNumber}</p>
                     </div>                     
                     <div className="info-item full-width">
                         <label>Address</label>
@@ -106,3 +109,5 @@ const PersonalInfo = ({ account, onUpdate }) => {
 };
 
 export default PersonalInfo
+
+

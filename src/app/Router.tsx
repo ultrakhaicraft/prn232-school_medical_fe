@@ -2,6 +2,7 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Spinner } from '../components/spinner';
+import { ParentUserProfile } from './pages/ParentUserProfile-Page';
 
 
 
@@ -47,8 +48,10 @@ export const AppRouter = () => {
             <Route path="/viewStudentHealthRecord" element={<ViewStudentHealthRecordPage />} />
             <Route path="/updateStudentHealthRecord" element={<UpdateStudentHealthRecordPage />} />
             <Route path="/nurse/medicines" element={<MedicineCRUDPage />} />
-            <Route path="/nurse/incidents" element={<IncidentRecordCRUDPage />} />
-            
+            <Route path="/nurse/incidents" element={<IncidentRecordCRUDPage />} />          
+            <Route path="/parentUserProfile" element={<ParentUserProfile/>}/>
+            <Route path="/assignStudentToParent"/>
+
            
 
             {/* Protected Routes can be added here */}

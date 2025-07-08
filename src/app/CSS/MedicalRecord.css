@@ -16,11 +16,26 @@
 
         .main-content {
           padding: 2rem 1rem;
+
+        }
+
+        .adjust-for-empty-record{
+          height: 80vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         .form-wrapper {
           max-width: 56rem; /* 896px */
           margin: 0 auto;
+        }
+
+        .empty-display-wrapper {
+          max-width: 56rem; /* 896px */
+          margin: 0 auto;
+          display: flex;
+          justify-content: center;
         }
 
         /* Header Styles */

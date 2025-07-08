@@ -1,4 +1,5 @@
-
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 interface UserHomeNavBarProps {
     userType: string;
 }
@@ -29,7 +30,50 @@ export default function UserHomeNavBar({userType}: UserHomeNavBarProps) {
             <a href="#">Contact Nurse</a>       
             <a href="#">User Profile</a>    
           </nav>
+          <ProfileDropdown/>
         </div>
     </header>
     );
 }
+
+const ProfileDropdown = () => {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleNavigateProfile = () => {
+    navigate('/parentUserProfile');
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
+  return (
+    <div className="profile-dropdown-container" ref={dropdownRef}>
+      <img
+        className="profile-avatar"
+        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fDE?q=80&w=2080&auto=format&fit=crop"
+        alt="User profile"
+        onClick={() => setOpen(prev => !prev)}
+      />
+      {open && (
+        <div className="dropdown-menu">
+          <button onClick={handleNavigateProfile} className="dropdown-item">👤 View Profile</button>
+          <button onClick={handleLogout} className="dropdown-item logout">🚪 Logout</button>
+        </div>
+      )}
+    </div>
+  );
+};

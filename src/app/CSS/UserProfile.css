@@ -28,6 +28,11 @@
         }
         .page-header .icon { color: #64748b; }
 
+        .page-header .primary-btn {
+            width: 200px;
+            
+        }
+
         /* Profile Header Card */
         .profile-header-card {
             background-color: white;
@@ -220,11 +225,7 @@
         }
         .button-link-student:hover { background-color: #059669; }
 
-        /* Icons */
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
+        
 
         /* Responsive */
         @media (min-width: 768px) {
