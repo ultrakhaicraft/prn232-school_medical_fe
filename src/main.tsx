@@ -5,6 +5,7 @@ import App from './app/App.tsx';
 
 //All CSS imports
 import './app/CSS/Global.css';
+import '../src/app/CSS/ParentStudentNavBar.css'
 
 
 

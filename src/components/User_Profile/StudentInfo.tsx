@@ -1,56 +1,65 @@
+import { useEffect, useState } from 'react';
 import { 
   IconStudent
 } from '../../components/IconList'; 
+import { Link } from 'react-router-dom';
 
 
 interface StudentInfoProp{
-    student: string;
+    studentName: string;
+    studentId: string;
 }
 
-const StudentInfo = ({ student } : StudentInfoProp) => {
-    const handleLinkStudent = () => {
-        // In a real app, this would navigate to a new page.
-        // e.g., window.location.href = '/link-student';
-        alert("Navigating to the 'Link Student' page...");
-    };
+const StudentInfo = ({ studentName, studentId } : StudentInfoProp) => {
+    const[isStudentExist,setIsStudentExist]= useState(true)
+
+    //Check if student Id is empty or null before setting isStudentExist value
+     useEffect(() => {
+        const isValid = studentId !== undefined && studentId !== null && studentId.trim() !== '';
+        setIsStudentExist(isValid);
+    }, [studentId]);
+
+  
 
     return (
         <div className="info-card">
             <div className="info-card-header">
-                <h2 className="info-card-title"><IconStudent /> Student Information</h2>
+                <h2 className="info-card-title"><IconStudent className="icon" /> Student Information</h2>
             </div>
             <div className="student-info-content">
-                <img src={student.avatarUrl} alt="Student Avatar" className="student-avatar" />
+                <img src='/assets/PRN_Avatar.svg' alt="Student Avatar" className="student-avatar" />
                 <div className="student-details">
-                    <h3>{student.name}</h3>
-                    {student.id ? (
-                        <p className="student-id">Student ID: {student.id}</p>
+                    {studentId ? (
+                        <>
+                        <h3>{studentName}</h3>
+                        <p className="student-id">Student ID: {studentId}</p>
+                        </>
                     ) : (
                         <p className="student-id">No student linked to this account.</p>
                     )}
                 </div>
             </div>
             <div className="info-grid" style={{marginTop: '1rem'}}>
-                {student.id ? (
+                {studentId ? (
                     <>
                         <div className="info-item">
                             <label>Class</label>
-                            <p>{student.class}</p>
+                            <p>11-A</p>
                         </div>
                         <div className="info-item">
                             <label>Homeroom Teacher</label>
-                            <p>{student.homeroomTeacher}</p>
+                            <p>Mikeson</p>
                         </div>
                         <div className="info-item">
                             <label>Academic Year</label>
-                            <p>{student.academicYear}</p>
+                            <p>2024-2025</p>
                         </div>
                     </>
                 ) : (
                      <div className="info-item full-width">
-                        <button className="button button-link-student" onClick={handleLinkStudent}>
-                            Link a Student to Your Account
-                        </button>
+                        <Link to="/assignStudentToParent" className="create-record-button">
+                            Link your student to you here
+                        </Link>
                     </div>
                 )}
             </div>
@@ -59,3 +68,5 @@ const StudentInfo = ({ student } : StudentInfoProp) => {
 };
 
 export default StudentInfo
+
+
