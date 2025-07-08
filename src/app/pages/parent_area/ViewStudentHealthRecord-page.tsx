@@ -120,21 +120,21 @@ export default function ViewStudentHealthRecordPage() {
         />
         <UserHomeNavBar 
           userType='parent' />
-        <main className="main-content">
-          if(setIsRecordDetailEmpty){
-            <div className='form-wrapper'>
-              <RecordEmptyView/>
-            </div>
-          }else{
-            <div className="form-wrapper">
+        <main className="main-content adjust-for-empty-record">
+        {isRecordDetailEmpty ? (
+          <div className="empty-display-wrapper">
+            <RecordEmptyView />
+          </div>
+        ) : (
+          <div className="form-wrapper">
             <MedicalRecordView 
-                error={error}
-                parentName={parentName}
-                viewData={viewData}
+              error={error}
+              parentName={parentName}
+              viewData={viewData ?? null}
             />
           </div>
-          }
-        </main>
+        )}
+      </main>
         <Footer />
       </div>
   );

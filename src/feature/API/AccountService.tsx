@@ -32,7 +32,6 @@ export interface AccountDetail extends AccountView {
 
 
 export interface AccountCreationData{
- 
   fullName: string;
   email: string;
   password: string;
@@ -40,13 +39,19 @@ export interface AccountCreationData{
   role: 'Student' | 'Parent' | 'SchoolNurse' | 'Manager' | 'Admin' | '';
   address: string;
   parentId: string;
-
 }
 
 
 
 
-export interface AccountUpdateData extends AccountCreationData {}
+export interface AccountUpdateData {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  role: 'Student' | 'Parent' | 'SchoolNurse' | 'Manager' | 'Admin' | '';
+  address: string;
+  parentId: string;
+}
 
 
 export interface PaginatedResponse<T> {
@@ -116,18 +121,13 @@ export const accountService = {
    * @returns {Promise<string>} A promise that resolves to the updated account data.
    */
   update: async (id: string, updateData: AccountUpdateData): Promise<string> => {
-    // We use PUT here, but PATCH is also common for partial updates.
-    const response = await apiClient.put<RawApiResponse<string>>('/account',{
-        id,
-        ...updateData
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    return response.data.data;
-  },
+  const response = await apiClient.put<RawApiResponse<string>>(`/account/${id}`, updateData, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return response.data.data;
+},
 
   /**
    * Deletes an account by its ID.
