@@ -1,14 +1,19 @@
 import { IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconStudentRecord, IconVaccine } from "./IconList";
 
-const SideNav = () => {
+interface SideNavProps {
+  activeItem: string;
+  onSelect: (label: string) => void;
+}
+
+const SideNav = ({ activeItem, onSelect }: SideNavProps) => {
   const navItems = [
-    { icon: <IconHome />, label: 'Home' },
-    { icon: <IconStudentRecord />, label: 'Student Record' },
-    { icon: <IconMedicine />, label: 'Medicine', active: true },
-    { icon: <IconMedical />, label: 'Medical' },
-    { icon: <IconIncidentReport />, label: 'Incident Report' },
-    { icon: <IconVaccine />, label: 'Vaccine' },
-    { icon: <IconHealthCheckup />, label: 'Health Checkup' },
+    { icon: <IconHome className="icon-small" />, label: 'Home' },
+    { icon: <IconStudentRecord className="icon-small" />, label: 'Student Record' },
+    { icon: <IconMedicine className="icon-small" />, label: 'Medicine' },
+    { icon: <IconMedical className="icon-small" />, label: 'Medical' },
+    { icon: <IconIncidentReport className="icon-small" />, label: 'Incident Report' },
+    { icon: <IconVaccine className="icon-small" />, label: 'Vaccine' },
+    { icon: <IconHealthCheckup className="icon-small" />, label: 'Health Checkup' },
   ];
 
   return (
@@ -23,10 +28,15 @@ const SideNav = () => {
         <ul>
           {navItems.map(item => (
             <li key={item.label}>
-              <a href="#" className={item.active ? 'nav-item active' : 'nav-item'}>
+              <button
+                type="button"
+                className={activeItem === item.label ? 'nav-item active' : 'nav-item'}
+                onClick={() => onSelect(item.label)}
+                style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', padding: 0 }}
+              >
                 {item.icon}
                 <span>{item.label}</span>
-              </a>
+              </button>
             </li>
           ))}
         </ul>
