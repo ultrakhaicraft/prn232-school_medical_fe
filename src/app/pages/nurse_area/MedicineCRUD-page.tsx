@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "../../CSS//MedicineCRUD.css"
 import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView } from '../../../components/IconList';
-import SideNav from '../../../components/StaffSideNav';
-
+import { MedicineService, Medicine, PaginatedResponse } from '../../../feature/API/MedicineService';
+import { MedicineView } from '../../../components/Medicine/MedicineView';
+import { ConfirmationModal } from '../../../components/ConfirmationModal';
 
 //Vài điều khi code phần này
 //Gọi các API từ Backend thì phải tạo "MedicineService" trong feature/API, làm giống như các Service khác
@@ -11,27 +12,110 @@ import SideNav from '../../../components/StaffSideNav';
 
 // Main App Component
 export default function MedicineCRUDPage() {
+  const [medicineData, setMedicineData] = useState<Medicine[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [medicineToDelete, setMedicineToDelete] = useState<Medicine | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const pageSize = 10;
 
-  const [medicineData,setMedicineData]=useState([]);
+  const loadMedicines = () => {
+    MedicineService.getAll({ PageIndex: currentPage, PageSize: pageSize })
+      .then((res: PaginatedResponse<Medicine>) => {
+        setMedicineData(res.data);
+        setTotalPages(res.totalPages);
+      })
+      .catch(console.error);
+  };
 
+  useEffect(() => {
+    loadMedicines();
+  }, [currentPage]);
 
-  //Gọi api tại đây rồi setMedicineData
+  const handleViewMedicine = async (id: string) => {
+    setLoading(true);
+    try {
+      const medicine = await MedicineService.getById(id);
+      setSelectedMedicine(medicine);
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error fetching medicine details:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedMedicine(null);
+  };
+
+  const handleDeleteClick = (medicine: Medicine) => {
+    setMedicineToDelete(medicine);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!medicineToDelete) return;
+    
+    setDeleteLoading(true);
+    try {
+      await MedicineService.delete(medicineToDelete.id);
+      setShowDeleteConfirm(false);
+      setMedicineToDelete(null);
+      loadMedicines(); // Reload the table
+    } catch (error) {
+      console.error('Error deleting medicine:', error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
+    setMedicineToDelete(null);
+  };
 
   return (
-    <div className="main-content">
-      <div className="dashboard-layout">
-      <SideNav />
-      <main className="dashboard-main">
-        <MedicineCRUD />
-      </main>
-    </div>
-    </div>
+    <>
+      <MedicineCRUD 
+        medicineData={medicineData} 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        setCurrentPage={setCurrentPage}
+        onViewMedicine={handleViewMedicine}
+        onDeleteMedicine={handleDeleteClick}
+        loading={loading}
+      />
+      {showModal && selectedMedicine && (
+        <MedicineView 
+          medicine={selectedMedicine} 
+          isOpen={showModal}
+          onClose={handleCloseModal} 
+        />
+      )}
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Medicine"
+        message={`Are you sure you want to delete "${medicineToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isLoading={deleteLoading}
+        type="danger"
+      />
+    </>
   );
 }
 
 // All Sub component of the page
 // Main CRUD component for medicines
-const MedicineCRUD = () => {
+const MedicineCRUD = ({ medicineData = [], currentPage, totalPages, setCurrentPage, onViewMedicine, onDeleteMedicine, loading }: { medicineData: Medicine[], currentPage: number, totalPages: number, setCurrentPage: (page: number) => void, onViewMedicine: (id: string) => void, onDeleteMedicine: (medicine: Medicine) => void, loading: boolean }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -39,12 +123,11 @@ const MedicineCRUD = () => {
           <h2 className="crud-title">Medicine CRUD</h2>
           <p className="crud-subtitle">Manage medicine inventory and records</p>
         </div>
-        <button className="button button-primary">
+        <button className="button button-primary button-small">
           <IconPlus />
           Create Medicine
         </button>
       </div>
-
       <div className="crud-table-wrapper">
         <table className="crud-table">
           <thead>
@@ -60,12 +143,16 @@ const MedicineCRUD = () => {
               <tr key={medicine.id}>
                 <td>{medicine.name}</td>
                 <td>{medicine.description}</td>
-                <td><StatusBadge status={medicine.status} /></td>
+                <td><StatusBadge status={medicine.isAvailable ? 'Active' : 'Inactive'} /></td>
                 <td>
                   <div className="action-buttons">
-                    <button className="action-button"><IconView /></button>
+                    <button className="action-button" onClick={() => onViewMedicine(medicine.id)} disabled={loading}>
+                      <IconView />
+                    </button>
                     <button className="action-button"><IconEdit /></button>
-                    <button className="action-button action-delete"><IconDelete /></button>
+                    <button className="action-button action-delete" onClick={() => onDeleteMedicine(medicine)} disabled={loading}>
+                      <IconDelete />
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -73,46 +160,42 @@ const MedicineCRUD = () => {
           </tbody>
         </table>
       </div>
-      
-      <Pagination />
+      <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
     </div>
   );
 }
 
-interface StatusBadge{
+interface StatusBadge {
   status: string;
 }
 
 // Status Badge Component
-const StatusBadge = ({status}:StatusBadge) => {
+const StatusBadge = ({ status }: StatusBadge) => {
   const statusClass = status === 'Active' ? 'status-badge-active' : 'status-badge-inactive';
   return <span className={`status-badge ${statusClass}`}>{status}</span>;
 }
 
 // Pagination Component
-const Pagination = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 3;
-
-    return (
-        <nav className="pagination-container">
-            <button className="pagination-arrow" disabled={currentPage === 1}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                 <button 
-                    key={page} 
-                    className={`pagination-number ${currentPage === page ? 'active' : ''}`}
-                    onClick={() => setCurrentPage(page)}
-                >
-                    {page}
-                </button>
-            ))}
-             <button className="pagination-arrow" disabled={currentPage === totalPages}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-        </nav>
-    );
+const Pagination = ({ currentPage, totalPages, setCurrentPage }: { currentPage: number, totalPages: number, setCurrentPage: (page: number) => void }) => {
+  return (
+    <nav className="pagination-container">
+      <button className="pagination-arrow" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+        <button
+          key={page}
+          className={`pagination-number ${currentPage === page ? 'active' : ''}`}
+          onClick={() => setCurrentPage(page)}
+        >
+          {page}
+        </button>
+      ))}
+      <button className="pagination-arrow" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </nav>
+  );
 };
 
 
