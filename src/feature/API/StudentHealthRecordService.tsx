@@ -96,17 +96,8 @@ export const StudentHealthRecordService = {
   
 
   create: async (accountData: StudentHealthRecordCreationData): Promise<string> => {
-    const token = localStorage.getItem("jwtToken"); 
 
-    const response = await apiClient.post<RawApiResponse<string>>(
-      '/student-health-record',
-      accountData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Send JWT in Authorization header
-        },
-      }
-    );
+    const response = await apiClient.post<RawApiResponse<string>>('/student-health-record',accountData);
 
     return response.data.data;
   },
@@ -114,10 +105,8 @@ export const StudentHealthRecordService = {
   
   update: async (studentHealthRecordId: string, updateData: StudentHealthRecordUpdate): Promise<string> => {
     // We use PUT here, but PATCH is also common for partial updates.
-    const response = await apiClient.put<RawApiResponse<string>>('/student-health-record',{
-        studentHealthRecordId,
-        ...updateData
-      },
+    const response = await apiClient.put<RawApiResponse<string>>(`/student-health-record/${studentHealthRecordId}`,
+     updateData,
       {
         headers: {
           'Content-Type': 'application/json',

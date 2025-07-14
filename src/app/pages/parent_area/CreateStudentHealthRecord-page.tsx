@@ -1,5 +1,5 @@
 
-import UserHomeNavBar from '../../../components/User_homepage/userhome-nav-bar';
+import UserHomeNavBar from '../../../components/User_homepage/horizontal-nav-bar';
 import Footer from '../../../components/Landing_Page/footer';
 
 import MedicalRecordForm from '../../../components/Student_Health_Record/MedicalRecordForm'; // Importing the medical record form component
@@ -77,7 +77,7 @@ export default function CreateStudentHealthRecordPage() {
 
           await StudentHealthRecordService.create(payload);
 
-          console.log("If it reach this, then the response is correct")
+          console.log("If it reach this, then create has been called")
           setToast({
             isVisible: true,
             message: 'Student health record created successfully!',

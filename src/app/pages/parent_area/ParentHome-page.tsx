@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../../../components/Landing_Page/footer';
-import UserHomepageNavBar from '../../../components/User_homepage/userhome-nav-bar'; 
+import UserHomepageNavBar from '../../../components/User_homepage/horizontal-nav-bar'; 
 import WelcomeBox from '../../../components/User_homepage/welcome-box';
 import HealthStatus from '../../../components/User_homepage/health-status-box';
 import HealthAnnouncements from '../../../components/User_homepage/news-box';
@@ -24,12 +24,24 @@ function ParentHomepage() {
                 return;
             }
             try{
-                const accountDetail= await accountService.getDetailById(userId)
-                setAccountDetail(accountDetail);
-                localStorage.setItem('accountDetail', JSON.stringify(accountDetail));
-                if(accountDetail.studentId && accountDetail.studentName){
-                    setIsStudentExist(false);
+                const result = await accountService.getDetailById(userId);
+
+                console.log('Account detail fetched successfully:', result);
+                
+                const studentDetail = await accountService.getStudentFromParentId(result.id);
+
+                if (studentDetail) {
+                setIsStudentExist(true);
+                result.studentId = studentDetail.id;
+                result.studentName = studentDetail.fullName;
+                } else {
+                setIsStudentExist(false);
+                result.studentId = "";
+                result.studentName = "";
                 }
+
+                setAccountDetail(result);
+                localStorage.setItem("accountDetail", JSON.stringify(result));
             }catch(error){
                 console.error('Failed to fetch account details:', error)
             }
@@ -68,7 +80,7 @@ function ParentHomepage() {
 function NoStudentAlertBox(){
 
     return(
-        <div className='box-warning'>
+        <div className='box-warning welcome-card'>
                 <p>!!! You don't have student assigned, please head over your profile to assign your student !!!</p>
         </div>
     );

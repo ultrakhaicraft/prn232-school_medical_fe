@@ -167,6 +167,11 @@ body, html {
   font-size: 1.2rem;
 }
 
+.no-link {
+  
+  text-decoration: none; /* Remove underline */
+}
+
 
 /* Icons */
         .icon {

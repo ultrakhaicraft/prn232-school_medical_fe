@@ -57,7 +57,7 @@ const StudentInfo = ({ studentName, studentId } : StudentInfoProp) => {
                     </>
                 ) : (
                      <div className="info-item full-width">
-                        <Link to="/assignStudentToParent" className="create-record-button">
+                        <Link to="/assignStudentToParent" className="primary-btn no-link " style={{marginTop: '1rem'}}>
                             Link your student to you here
                         </Link>
                     </div>

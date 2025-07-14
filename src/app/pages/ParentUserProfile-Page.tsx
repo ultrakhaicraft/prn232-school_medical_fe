@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  IconUser
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+    IconUser
 } from '../../components/IconList';
 import ProfileHeader from '../../components/User_Profile/ProfileHeader';
 import StudentInfo from '../../components/User_Profile/StudentInfo';
 import PersonalInfo from '../../components/User_Profile/PersonalInfo';
 import { AccountDetail, accountService, AccountUpdateData } from '../../feature/API/AccountService';
 import '../CSS/UserProfile.css'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-export interface IPersonalInfo{
+export interface IPersonalInfo {
     fullName: string,
     email: string,
     phone: string,
@@ -17,11 +17,11 @@ export interface IPersonalInfo{
 }
 
 // --- User Profile Page Component ---
-export function ParentUserProfile(){
-    const navigate=useNavigate();
-    const [accountDetail, setAccountDetail]= useState<AccountDetail>(); //Hold account detail
-    const [role,setRole]=useState('');
-    const [updatedPersonalInfo,setUpdatedPersonalInfo]= useState<AccountUpdateData|null>(null)
+export default function ParentUserProfile() {
+    const navigate = useNavigate();
+    const [accountDetail, setAccountDetail] = useState<AccountDetail>(); //Hold account detail
+    const [role, setRole] = useState('');
+    const [updatedPersonalInfo, setUpdatedPersonalInfo] = useState<AccountUpdateData | null>(null)
     const [isEditMode, setIsEditMode] = useState(false);
 
     const [formData, setFormData] = useState<IPersonalInfo>({
@@ -30,6 +30,16 @@ export function ParentUserProfile(){
         phone: '',
         address: '',
     });
+
+    const getAccountDetail = useCallback(() => {
+        const stored = localStorage.getItem('accountDetail');
+        if (stored) {
+            const account = JSON.parse(stored);
+            setAccountDetail(account);
+        } else {
+            console.warn("account Detail is empty in localStorage");
+        }
+    }, []);
 
     useEffect(() => {
         getAccountDetail();
@@ -41,14 +51,14 @@ export function ParentUserProfile(){
                 address: accountDetail.address,
             });
         }
-    }, [accountDetail]);
+    }, [getAccountDetail]);
 
     //This is where we call update API
-    const handleAccountUpdate = async (PersonalInfo:IPersonalInfo) => {
-        
+    const handleAccountUpdate = async (PersonalInfo: IPersonalInfo) => {
+
         const storedRole = localStorage.getItem('userRole') as AccountUpdateData['role'] | null;
 
-        const newPersonalInfo:AccountUpdateData = {
+        const newPersonalInfo: AccountUpdateData = {
             fullName: PersonalInfo.fullName,
             email: PersonalInfo.email,
             phoneNumber: PersonalInfo.phone,
@@ -57,11 +67,11 @@ export function ParentUserProfile(){
             parentId: localStorage.getItem('userId') ?? ''
         }
 
-        const userId=accountDetail?.id?? "Empty ID";
+        const userId = accountDetail?.id ?? "Empty ID";
         console.log(`Performing Update with ID: ${userId} `);
         console.log(newPersonalInfo);
 
-        await accountService.update(userId,newPersonalInfo);
+        await accountService.update(userId, newPersonalInfo);
 
         const updatedDetail = await accountService.getDetailById(userId);
 
@@ -73,40 +83,30 @@ export function ParentUserProfile(){
         setIsEditMode(false);
     };
 
-    const handleBack=()=>{
-        setIsEditMode(false);
-        navigate(-1);
-    }
 
-    const getAccountDetail = () => {
-            const stored = localStorage.getItem('accountDetail');
-            if (stored) {
-                const accountDetail = JSON.parse(stored);
-                setAccountDetail(accountDetail);
-            }else{
-                console.warn("account Detail is empty in localStorage")
-                return;
-            }
-    }
+
+
 
     return (
         <div className="container">
             <header className="page-header">
-                <IconUser className='icon'/> User Profile
-                <button className='primary-btn' onClick={handleBack}>Return</button>
+                <IconUser className='icon' /> User Profile
+                <Link className='primary-btn no-link' to="/assignStudentToParent">
+                    Return
+                </Link>
             </header>
-            
-            <ProfileHeader 
-                name={accountDetail?.fullName ?? ""} 
-                parentOf={accountDetail?.studentName ?? ""} 
+
+            <ProfileHeader
+                name={accountDetail?.fullName ?? ""}
+                parentOf={accountDetail?.studentName ?? ""}
                 memberSince='7/2/2025'
                 avatarUrl='/assets/PRN_Avatar.svg'
             />
 
             <div className="profile-content-grid">
-                {accountDetail && ( <PersonalInfo account={accountDetail} onUpdate={handleAccountUpdate} 
-                    isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData}/>)}
-                <StudentInfo studentName={accountDetail?.studentName??""} studentId={accountDetail?.studentId??""} />
+                {accountDetail && (<PersonalInfo account={accountDetail} onUpdate={handleAccountUpdate}
+                    isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} />)}
+                <StudentInfo studentName={accountDetail?.studentName ?? ""} studentId={accountDetail?.studentId ?? ""} />
             </div>
         </div>
     );

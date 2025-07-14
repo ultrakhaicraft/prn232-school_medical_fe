@@ -26,9 +26,7 @@ export default function UserHomeNavBar({userType}: UserHomeNavBarProps) {
             <a href={homeUrl}>Home</a>
             {userType === 'parent' && <a href="/viewStudentHealthRecord">Student Health Record</a>}
             {userType === 'parent' && <a href="/requestMedicine">Request Medicine</a>}
-            <a href="#">News</a>
-            <a href="#">Contact Nurse</a>       
-            <a href="#">User Profile</a>    
+            <a href="#">News</a>               
           </nav>
           <ProfileDropdown/>
         </div>

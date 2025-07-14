@@ -135,6 +135,15 @@ body {
   object-fit: cover;
 }
 
+.box-warning{
+  background-color: #fef2f2; /* Light red */
+  border: 1px solid #fee2e2; /* Lighter red border */
+  color: #b91c1c; /* Dark red text */
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
 .welcome-text {
   flex-grow: 1;
 }

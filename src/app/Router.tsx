@@ -2,7 +2,7 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Spinner } from '../components/spinner';
-import { ParentUserProfile } from './pages/ParentUserProfile-Page';
+
 
 
 
@@ -19,6 +19,9 @@ const UpdateStudentHealthRecordPage=React.lazy(()=> import('../app/pages/parent_
 const ViewStudentHealthRecordPage =React.lazy(()=> import('../app/pages/parent_area/ViewStudentHealthRecord-page'));
 const MedicineCRUDPage = React.lazy(() => import('../app/pages/nurse_area/MedicineCRUD-page'));
 const IncidentRecordCRUDPage = React.lazy(() => import('../app/pages/nurse_area/IncidentRecordCRUD-page'));
+const ParentMedicineRequest = React.lazy(() => import('../app/pages/parent_area/ParentMedicineRequest-page'));
+const ParentUserProfile = React.lazy(() => import('../app/pages/ParentUserProfile-Page'));
+const LinkStudentPage = React.lazy(() => import('../app/pages/LinkingStudent-Page'));
 
 // A simple component to center the spinner
 const FullPageSpinner = () => (
@@ -50,7 +53,8 @@ export const AppRouter = () => {
             <Route path="/nurse/medicines" element={<MedicineCRUDPage />} />
             <Route path="/nurse/incidents" element={<IncidentRecordCRUDPage />} />          
             <Route path="/parentUserProfile" element={<ParentUserProfile/>}/>
-            <Route path="/assignStudentToParent"/>
+            <Route path="/requestMedicine" element={<ParentMedicineRequest/>}/>
+            <Route path="/assignStudentToParent" element={<LinkStudentPage/>} />
 
            
 

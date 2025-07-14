@@ -1,4 +1,4 @@
-import UserHomeNavBar from '../../../components/User_homepage/userhome-nav-bar';
+import UserHomeNavBar from '../../../components/User_homepage/horizontal-nav-bar';
 import Footer from '../../../components/Landing_Page/footer';
 import RecordEmptyView from '../../../components/Student_Health_Record/EmptyRecordView'
 
@@ -84,7 +84,7 @@ export default function ViewStudentHealthRecordPage() {
             // call the API
             try {
               setParentName(parentData.fullName);
-              const recordDetailFromApi = await StudentHealthRecordService.getDetailByStudentId(parentData.id);
+              const recordDetailFromApi = await StudentHealthRecordService.getDetailByStudentId(parentData.studentId);
 
               // If the API returns a valid record
               if (recordDetailFromApi) {
@@ -120,7 +120,7 @@ export default function ViewStudentHealthRecordPage() {
         />
         <UserHomeNavBar 
           userType='parent' />
-        <main className="main-content adjust-for-empty-record">
+        <main className={`main-content ${isRecordDetailEmpty ? 'adjust-for-empty-record' : ''}`}>
         {isRecordDetailEmpty ? (
           <div className="empty-display-wrapper">
             <RecordEmptyView />
