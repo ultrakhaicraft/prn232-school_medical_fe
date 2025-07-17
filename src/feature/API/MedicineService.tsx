@@ -49,4 +49,14 @@ export const MedicineService = {
     const response = await apiClient.delete<RawApiResponse<boolean>>(`/medicine/${id}`);
     return response.data.data;
   },
+
+  create: async (data: { name: string; description: string; amount: number; isAvailable: boolean }): Promise<Medicine> => {
+    const response = await apiClient.post<RawApiResponse<Medicine>>('/medicine', data);
+    return response.data.data;
+  },
+
+  update: async (id: string, data: { name: string; description: string; amount: number; isAvailable: boolean }): Promise<Medicine> => {
+    const response = await apiClient.put<RawApiResponse<Medicine>>(`/medicine/${id}`, data);
+    return response.data.data;
+  },
 }; 

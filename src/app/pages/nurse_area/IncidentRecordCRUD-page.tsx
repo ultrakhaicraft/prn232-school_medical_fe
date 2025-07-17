@@ -5,6 +5,9 @@ import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, 
 import { IncidentRecordService, IncidentRecord } from '../../../feature/API/IncidentRecordService';
 import { IncidentRecordView } from '../../../components/IncidentRecord/IncidentRecordView';
 import { ConfirmationModal } from '../../../components/ConfirmationModal';
+import CreateIncidentRecordModal from '../../../components/IncidentRecord/CreateIncidentRecordModal';
+import { Toast } from '../../../components/Notification/Toast';
+import UpdateIncidentRecordModal from '../../../components/IncidentRecord/UpdateIncidentRecordModal';
 
 // Main App Component
 export default function IncidentRecordCRUDPage() {
@@ -15,6 +18,10 @@ export default function IncidentRecordCRUDPage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [incidentToDelete, setIncidentToDelete] = useState<IncidentRecord | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [incidentToUpdate, setIncidentToUpdate] = useState<IncidentRecord | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error'; isVisible: boolean }>({ message: '', type: 'success', isVisible: false });
 
   const loadIncidents = () => {
     IncidentRecordService.getAll()
@@ -59,8 +66,10 @@ export default function IncidentRecordCRUDPage() {
       await IncidentRecordService.delete(incidentToDelete.id);
       setShowDeleteConfirm(false);
       setIncidentToDelete(null);
+      setToast({ message: 'Incident record deleted successfully!', type: 'success', isVisible: true });
       loadIncidents(); // Reload the table
-    } catch (error) {
+    } catch (error: any) {
+      setToast({ message: error?.response?.data?.message || 'Error deleting incident record.', type: 'error', isVisible: true });
       console.error('Error deleting incident record:', error);
     } finally {
       setDeleteLoading(false);
@@ -72,6 +81,57 @@ export default function IncidentRecordCRUDPage() {
     setIncidentToDelete(null);
   };
 
+  const handleCreateIncident = () => {
+    setShowCreateModal(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
+  const handleCreateSuccess = () => {
+    setToast({ message: 'Incident record created successfully!', type: 'success', isVisible: true });
+    setShowCreateModal(false);
+    loadIncidents();
+  };
+
+  const handleCreateError = (msg: string) => {
+    setToast({ message: msg, type: 'error', isVisible: true });
+  };
+
+  const handleEditIncident = async (incident: IncidentRecord) => {
+    setLoading(true);
+    try {
+      const fullIncident = await IncidentRecordService.getById(incident.id);
+      setIncidentToUpdate(fullIncident);
+      setShowUpdateModal(true);
+    } catch (error: any) {
+      setToast({ message: error?.response?.data?.message || 'Failed to load incident record for editing.', type: 'error', isVisible: true });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseUpdateModal = () => {
+    setShowUpdateModal(false);
+    setIncidentToUpdate(null);
+  };
+
+  const handleUpdateSuccess = () => {
+    setToast({ message: 'Incident record updated successfully!', type: 'success', isVisible: true });
+    setShowUpdateModal(false);
+    setIncidentToUpdate(null);
+    loadIncidents();
+  };
+
+  const handleUpdateError = (msg: string) => {
+    setToast({ message: msg, type: 'error', isVisible: true });
+  };
+
+  const handleToastClose = () => {
+    setToast((prev) => ({ ...prev, isVisible: false }));
+  };
+
   return (
     <>
       <IncidentRecordCRUD 
@@ -79,6 +139,8 @@ export default function IncidentRecordCRUDPage() {
         onViewIncident={handleViewIncident}
         onDeleteIncident={handleDeleteClick}
         loading={loading}
+        onCreateIncident={handleCreateIncident}
+        onEditIncident={handleEditIncident}
       />
       {showModal && selectedIncident && (
         <IncidentRecordView 
@@ -87,6 +149,19 @@ export default function IncidentRecordCRUDPage() {
           onClose={handleCloseModal} 
         />
       )}
+      <CreateIncidentRecordModal
+        isOpen={showCreateModal}
+        onClose={handleCloseCreateModal}
+        onSuccess={handleCreateSuccess}
+        onError={handleCreateError}
+      />
+      <UpdateIncidentRecordModal
+        isOpen={showUpdateModal}
+        incidentRecord={incidentToUpdate}
+        onClose={handleCloseUpdateModal}
+        onSuccess={handleUpdateSuccess}
+        onError={handleUpdateError}
+      />
       <ConfirmationModal
         isOpen={showDeleteConfirm}
         onClose={handleDeleteCancel}
@@ -98,13 +173,19 @@ export default function IncidentRecordCRUDPage() {
         isLoading={deleteLoading}
         type="danger"
       />
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={handleToastClose}
+      />
     </>
   );
 }
 
 // All Sub component of the page
 // Main CRUD component for incident records
-const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteIncident, loading }: { incidentData: IncidentRecord[], onViewIncident: (id: string) => void, onDeleteIncident: (incident: IncidentRecord) => void, loading: boolean }) => {
+const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteIncident, loading, onCreateIncident, onEditIncident }: { incidentData: IncidentRecord[], onViewIncident: (id: string) => void, onDeleteIncident: (incident: IncidentRecord) => void, loading: boolean, onCreateIncident: () => void, onEditIncident: (incident: IncidentRecord) => void }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -112,7 +193,7 @@ const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteInciden
           <h2 className="crud-title">Incident Record CRUD</h2>
           <p className="crud-subtitle">Manage student incident records and reports</p>
         </div>
-        <button className="button button-primary button-small">
+        <button className="button button-primary button-small" onClick={onCreateIncident}>
           <IconPlus />
           Create Incident Record
         </button>
@@ -142,7 +223,7 @@ const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteInciden
                     <button className="action-button" onClick={() => onViewIncident(incident.id)} disabled={loading}>
                       <IconView />
                     </button>
-                    <button className="action-button"><IconEdit /></button>
+                    <button className="action-button" onClick={() => onEditIncident(incident)} disabled={loading}><IconEdit /></button>
                     <button className="action-button action-delete" onClick={() => onDeleteIncident(incident)} disabled={loading}>
                       <IconDelete />
                     </button>
