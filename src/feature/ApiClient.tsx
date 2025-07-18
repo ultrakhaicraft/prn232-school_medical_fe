@@ -3,6 +3,22 @@
 
 import axios from 'axios';
 
+export interface PaginatedResponse<T> {
+  pageIndex: number;
+  totalPages: number;
+  pageSize: number;
+  totalCount: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  data: T[];
+}
+
+export interface RawApiResponse<T> {
+  statusCode: string;
+  message: string;
+  data: T;
+}
+
 // Get the API URL from environment variables for security and flexibility
 const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:7085/api';
 

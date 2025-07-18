@@ -64,6 +64,22 @@ body, html {
     border: #1c5db7 1px solid; /* Add border on hover */
 }
 
+/* Back Link */
+.back-link {
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #4f46e5;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.back-link:hover{
+   border: #1c5db7 1px solid; 
+}
+
 .input-group {
     margin-bottom: 20px;
 }

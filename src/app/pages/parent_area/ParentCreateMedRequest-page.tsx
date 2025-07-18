@@ -1,20 +1,16 @@
 
-import UserHomeNavBar from '../../../components/User_homepage/horizontal-nav-bar';
 import Footer from '../../../components/Landing_Page/footer';
-
-import MedicalRecordForm from '../../../components/Student_Health_Record/MedicalRecordForm'; // Importing the medical record form component
-
 import '../../CSS/MedicalRecord.css'; // Importing CSS styles for the medical record form
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { StudentHealthRecordCreationData, StudentHealthRecordService } from '../../../feature/API/StudentHealthRecordService';
 import { Toast } from '../../../components/Notification/Toast';
 import { AccountDetail } from '../../../feature/API/AccountService';
+import MedicineRequestForm from '../../../components/MedicineRequest/MedicineRequestForm';
+import { MedicineRequestCreation, MedicineRequestService } from '../../../feature/API/MedicineRequestService';
 
-// Create Student Health Record Component - This is the entry point
-export default function CreateStudentHealthRecordPage() {
+// Create MedicineRequest Component - This is the entry point
+export default function CreateMedicineRequest() {
   const navigate = useNavigate();
-  const location = useLocation();
 
 
   const [error, setError] = useState<string | null>(null);
@@ -22,11 +18,7 @@ export default function CreateStudentHealthRecordPage() {
 
   // State to hold form data
   const [formData, setFormData] = useState({
-    height: '150',
-    allergies: '',
-    chronicDiseases: '',
-    vision: '',
-    hearing: '',
+    description: ''
   });
 
   // State for toast notifications
@@ -64,18 +56,15 @@ export default function CreateStudentHealthRecordPage() {
         return;
       }
 
-      const payload: StudentHealthRecordCreationData = {
-        studentName: parentData.studentName,
-        studentId: parentData.studentId,
-        createdBy: parentData.id,
-        height: parseFloat(formData.height),
-        allergies: formData.allergies,
-        chronicDiseases: formData.chronicDiseases,
-        vision: formData.vision,
-        hearing: formData.hearing,
+      const payload: MedicineRequestCreation = {
+        requestBy: parentData.id,
+        forStudent: parentData.studentId,
+        description: formData.description
       };
 
-      await StudentHealthRecordService.create(payload);
+      console.log(payload);
+
+      await MedicineRequestService.create(payload);
 
       console.log("If it reach this, then create has been called")
       setToast({
@@ -87,7 +76,7 @@ export default function CreateStudentHealthRecordPage() {
       //Wait for 3 seconds
 
       //Navigate back to View
-      navigate("/viewStudentHealthRecord")
+      navigate("/requestMedicine")
 
     } catch (err: any) {
       console.error(err);
@@ -109,14 +98,16 @@ export default function CreateStudentHealthRecordPage() {
         type={toast.type}
         onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
       />
-      <UserHomeNavBar
-        userType='parent' />
-      <main className="main-content">
-        <Link className='back-link' to="/viewStudentHealthRecord">
+      
+      <div className="screen-header">
+        <Link className="back-link" to="/requestMedicine">
           Return
         </Link>
+        <h1 className="screen-title">Create Student Health Record</h1>
+      </div>
+      <main className="main-content">
         <div className="form-wrapper">
-          <MedicalRecordForm
+          <MedicineRequestForm
             handleInputChange={handleInputChange}
             handleSubmit={handleSubmit}
             isLoading={isLoading}

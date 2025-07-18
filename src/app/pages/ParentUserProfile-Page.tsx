@@ -89,11 +89,11 @@ export default function ParentUserProfile() {
 
     return (
         <div className="container">
+            <Link className='back-link' to="/parentHomepage">
+                Return
+            </Link>
             <header className="page-header">
                 <IconUser className='icon' /> User Profile
-                <Link className='primary-btn no-link' to="/assignStudentToParent">
-                    Return
-                </Link>
             </header>
 
             <ProfileHeader

@@ -1,5 +1,5 @@
 //The goal is to call CRUD operations on the user API
-import apiClient from '../ApiClient';
+import apiClient, { PaginatedResponse, RawApiResponse } from '../ApiClient';
 
 // --- Type Definitions for an Account ---
 // This defines the data structure for an account, providing type safety.
@@ -47,21 +47,7 @@ export interface StudentHealthRecordCreationData{
 export interface StudentHealthRecordUpdate extends StudentHealthRecordCreationData {}
 
 
-export interface PaginatedResponse<T> {
-  pageIndex: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  data: T[];
-}
 
-interface RawApiResponse<T> {
-    statusCode: string;
-    message: string;
-    data: T;
-}
 
 // --- API Service Object ---
 

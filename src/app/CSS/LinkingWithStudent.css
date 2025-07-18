@@ -17,16 +17,7 @@ body {
     padding: 2rem 1rem;
 }
 
-/* Back Link */
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: #4f46e5;
-    font-weight: 500;
-    margin-bottom: 2rem;
-}
+
 
 /* Page Header */
 .page-header {

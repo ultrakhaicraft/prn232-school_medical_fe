@@ -63,7 +63,7 @@ function ParentHomepage() {
             avatarSrc="/assets/PRN_Avatar.svg" 
              />
 
-            {isStudentExist && <NoStudentAlertBox/> }
+            {!isStudentExist && <NoStudentAlertBox/> }
 
             <HealthStatus
             userType={userType}
