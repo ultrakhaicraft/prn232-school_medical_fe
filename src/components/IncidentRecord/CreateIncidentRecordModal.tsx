@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IncidentRecordService } from '../../feature/API/IncidentRecordService';
+import { accountService, AccountView } from '../../feature/API/AccountService';
 import { IconClose } from '../IconList';
 
 interface CreateIncidentRecordModalProps {
@@ -21,6 +22,18 @@ const CreateIncidentRecordModal: React.FC<CreateIncidentRecordModalProps> = ({ i
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [students, setStudents] = useState<AccountView[]>([]);
+  const [isLoadingStudents, setIsLoadingStudents] = useState(false);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setIsLoadingStudents(true);
+      accountService.getAllStudents()
+        .then(setStudents)
+        .catch(() => setStudents([]))
+        .finally(() => setIsLoadingStudents(false));
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -99,14 +112,21 @@ const CreateIncidentRecordModal: React.FC<CreateIncidentRecordModalProps> = ({ i
           <div className="modal-column">
             <div className="detail-row">
               <span className="detail-label">Student ID</span>
-              <input
+              <select
                 className="input-field"
                 name="studentId"
                 value={form.studentId}
                 onChange={handleChange}
-                disabled={isSubmitting}
+                disabled={isSubmitting || isLoadingStudents}
                 required
-              />
+              >
+                <option value="">Select a student...</option>
+                {students.map((student) => (
+                  <option key={student.id} value={student.id}>
+                    {student.id} - {student.fullName}
+                  </option>
+                ))}
+              </select>
               {errors.studentId && <div className="error-message">{errors.studentId}</div>}
             </div>
             <div className="detail-row">
