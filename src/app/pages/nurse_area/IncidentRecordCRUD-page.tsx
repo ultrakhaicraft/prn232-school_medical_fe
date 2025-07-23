@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import "../../CSS/IncidentRecordCRUD.css"
-import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView } from '../../../components/IconList';
+import { IconDelete, IconEdit, IconPlus, IconView } from '../../../components/IconList';
 import { IncidentRecordService, IncidentRecord } from '../../../feature/API/IncidentRecordService';
 import { IncidentRecordView } from '../../../components/IncidentRecord/IncidentRecordView';
 import { ConfirmationModal } from '../../../components/ConfirmationModal';

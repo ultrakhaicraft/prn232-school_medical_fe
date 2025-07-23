@@ -1,5 +1,5 @@
 //The goal is to call CRUD operations on the user API
-import apiClient from '../ApiClient';
+import apiClient, { PaginatedResponse, RawApiResponse } from '../ApiClient';
 
 // --- Type Definitions for an Account ---
 // This defines the data structure for an account, providing type safety.
@@ -47,21 +47,7 @@ export interface StudentHealthRecordCreationData{
 export interface StudentHealthRecordUpdate extends StudentHealthRecordCreationData {}
 
 
-export interface PaginatedResponse<T> {
-  pageIndex: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  data: T[];
-}
 
-interface RawApiResponse<T> {
-    statusCode: string;
-    message: string;
-    data: T;
-}
 
 // --- API Service Object ---
 
@@ -96,17 +82,8 @@ export const StudentHealthRecordService = {
   
 
   create: async (accountData: StudentHealthRecordCreationData): Promise<string> => {
-    const token = localStorage.getItem("jwtToken"); 
 
-    const response = await apiClient.post<RawApiResponse<string>>(
-      '/student-health-record',
-      accountData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Send JWT in Authorization header
-        },
-      }
-    );
+    const response = await apiClient.post<RawApiResponse<string>>('/student-health-record',accountData);
 
     return response.data.data;
   },
@@ -114,10 +91,8 @@ export const StudentHealthRecordService = {
   
   update: async (studentHealthRecordId: string, updateData: StudentHealthRecordUpdate): Promise<string> => {
     // We use PUT here, but PATCH is also common for partial updates.
-    const response = await apiClient.put<RawApiResponse<string>>('/student-health-record',{
-        studentHealthRecordId,
-        ...updateData
-      },
+    const response = await apiClient.put<RawApiResponse<string>>(`/student-health-record/${studentHealthRecordId}`,
+     updateData,
       {
         headers: {
           'Content-Type': 'application/json',

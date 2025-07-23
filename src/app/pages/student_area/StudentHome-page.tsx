@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Footer from '../../../components/Landing_Page/footer';
-import UserHomepageNavBar from '../../../components/User_homepage/userhome-nav-bar'; 
+import UserHomepageNavBar from '../../../components/User_homepage/horizontal-nav-bar'; 
 import WelcomeBox from '../../../components/User_homepage/welcome-box';
 import HealthStatus from '../../../components/User_homepage/health-status-box';
 import HealthAnnouncements from '../../../components/User_homepage/news-box';

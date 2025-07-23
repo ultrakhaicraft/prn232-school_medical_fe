@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconClose } from './IconList';
+import '../app/CSS/Modal.css'; // Ensure you have appropriate styles for the modal
 
 interface ConfirmationModalProps {
   isOpen: boolean;

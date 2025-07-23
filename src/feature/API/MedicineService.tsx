@@ -1,4 +1,4 @@
-import apiClient from '../ApiClient';
+import apiClient, { PaginatedResponse, RawApiResponse } from '../ApiClient';
 
 export interface Medicine {
   id: string;
@@ -18,21 +18,7 @@ export interface MedicineQueryParams {
   IsDescending?: boolean;
 }
 
-export interface PaginatedResponse<T> {
-  pageIndex: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  data: T[];
-}
 
-interface RawApiResponse<T> {
-  statusCode: string;
-  message: string;
-  data: T;
-}
 
 export const MedicineService = {
   getAll: async (params: MedicineQueryParams = {}): Promise<PaginatedResponse<Medicine>> => {

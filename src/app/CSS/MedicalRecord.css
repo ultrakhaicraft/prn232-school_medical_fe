@@ -19,6 +19,15 @@
 
         }
 
+      .screen-header {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1rem 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
         .adjust-for-empty-record{
           height: 80vh;
           display: flex;

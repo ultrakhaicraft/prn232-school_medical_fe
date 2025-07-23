@@ -23,7 +23,7 @@ function Welcome({ name, childName, avatarSrc, userType }: WelcomeProps) {
             <span className="parent-icon" role="img" aria-label="parent icon">👩‍👧</span>
           )}
           {userType === 'student' && 'Class of 10A'}
-          {userType === 'parent' && <> 0Parent of: <span className="child-name">{childName}</span></>}
+          {userType === 'parent' && <> Parent of: <span className="child-name">{childName}</span></>}
           {userType === 'nurse' && <span>School Nurse</span>}
         </p>
       </div>

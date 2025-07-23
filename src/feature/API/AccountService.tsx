@@ -1,5 +1,5 @@
 //The goal is to call CRUD operations on the user API
-import apiClient from '../ApiClient';
+import apiClient, { PaginatedResponse, RawApiResponse } from '../ApiClient';
 
 // --- Type Definitions for an Account ---
 // This defines the data structure for an account, providing type safety.
@@ -7,6 +7,7 @@ import apiClient from '../ApiClient';
 
 export interface GetAllAccountsParams {
   FullName?: string;
+  Email?: string;
   Role?: string;
   Status?: string;
   PageNumber: number;
@@ -14,11 +15,11 @@ export interface GetAllAccountsParams {
 }
 
 export interface AccountView {
-  id: string;     
+  id: string;
   fullName: string;
-  email: string;   
-  role: string;   
-  status: string | null; 
+  email: string;
+  role: string;
+  status: string | null;
 }
 
 export interface AccountDetail extends AccountView {
@@ -31,7 +32,7 @@ export interface AccountDetail extends AccountView {
 }
 
 
-export interface AccountCreationData{
+export interface AccountCreationData {
   fullName: string;
   email: string;
   password: string;
@@ -54,38 +55,24 @@ export interface AccountUpdateData {
 }
 
 
-export interface PaginatedResponse<T> {
-  pageIndex: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  data: T[];
-}
 
-interface RawApiResponse<T> {
-    statusCode: string;
-    message: string;
-    data: T;
-}
 
 // --- API Service Object ---
 
 
 export const accountService = {
   /**
-   * Fetches a paginated and filtered list of accounts.
+   * Fetches a paginated and filtered list of accounts. Can also be used to search for students.
    * @param {GetAllAccountsParams} params - The filtering and pagination options.
    * @returns {Promise<PaginatedResponse<AccountView>>} A promise that resolves to the paginated data.
    */
 
   getAll: async (params: GetAllAccountsParams): Promise<PaginatedResponse<AccountView>> => {
-    
+
     const response = await apiClient.get<RawApiResponse<PaginatedResponse<AccountView>>>('/account', {
       params: params,
     });
-    
+
     // The actual data we need is nested inside the `data` property
     return response.data.data;
   },
@@ -101,6 +88,13 @@ export const accountService = {
     return response.data.data;
   },
 
+
+  getStudentFromParentId: async (parentId: string): Promise<AccountDetail> => {
+    const response = await apiClient.get<RawApiResponse<AccountDetail>>(`/account/${parentId}/student`);
+    return response.data.data;
+  },
+
+
   /**
    * Fetches all student accounts (for dropdowns, etc.)
    * @returns {Promise<AccountView[]>} A promise that resolves to the list of student accounts.
@@ -115,6 +109,7 @@ export const accountService = {
     });
     return response.data.data.data;
   },
+
 
   /**
    * Creates a new account.
@@ -133,13 +128,13 @@ export const accountService = {
    * @returns {Promise<string>} A promise that resolves to the updated account data.
    */
   update: async (id: string, updateData: AccountUpdateData): Promise<string> => {
-  const response = await apiClient.put<RawApiResponse<string>>(`/account/${id}`, updateData, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return response.data.data;
-},
+    const response = await apiClient.put<RawApiResponse<string>>(`/account/${id}`, updateData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data.data;
+  },
 
   /**
    * Deletes an account by its ID.
@@ -147,10 +142,18 @@ export const accountService = {
    * @returns {Promise<string>} A promise that resolves when the deletion is successful.
    */
   remove: async (userId: string): Promise<string> => {
-    const response = await apiClient.delete<RawApiResponse<string>>('/account',{
+    const response = await apiClient.delete<RawApiResponse<string>>('/account', {
       params: { userId },
     });
 
     return response.data.data;
   },
+
+  link: async (parentId: string, studentId: string): Promise<string> => {
+    console.log(`Calling API`);
+    const response = await apiClient.patch<RawApiResponse<string>>(
+      `/account/assign-student?studentId=${studentId}&parentId=${parentId}`
+    );
+    return response.data.data;
+  }
 };

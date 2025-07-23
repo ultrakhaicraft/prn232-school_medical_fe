@@ -2,7 +2,9 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Spinner } from '../components/spinner';
-import { ParentUserProfile } from './pages/ParentUserProfile-Page';
+import CreateMedicineRequest from './pages/parent_area/ParentCreateMedRequest-page';
+import { ProtectedRoute } from './ProtectedRoute';
+
 
 
 
@@ -15,10 +17,13 @@ const ParentHomepage = React.lazy(() => import('../app/pages/parent_area/ParentH
 const StudentHomepage = React.lazy(() => import('../app/pages/student_area/StudentHome-page'));
 const NurseHomepage = React.lazy(() => import('../app/pages/nurse_area/NurseHome-page'));
 const CreateStudentHealthRecordForm = React.lazy(() => import('../app/pages/parent_area/CreateStudentHealthRecord-page'));
-const UpdateStudentHealthRecordPage=React.lazy(()=> import('../app/pages/parent_area/UpdateStudentHealthRecord-page'));
-const ViewStudentHealthRecordPage =React.lazy(()=> import('../app/pages/parent_area/ViewStudentHealthRecord-page'));
+const UpdateStudentHealthRecordPage = React.lazy(() => import('../app/pages/parent_area/UpdateStudentHealthRecord-page'));
+const ViewStudentHealthRecordPage = React.lazy(() => import('../app/pages/parent_area/ViewStudentHealthRecord-page'));
 const MedicineCRUDPage = React.lazy(() => import('../app/pages/nurse_area/MedicineCRUD-page'));
 const IncidentRecordCRUDPage = React.lazy(() => import('../app/pages/nurse_area/IncidentRecordCRUD-page'));
+const ParentMedicineRequest = React.lazy(() => import('../app/pages/parent_area/ParentMedicineRequest-page'));
+const ParentUserProfile = React.lazy(() => import('../app/pages/ParentUserProfile-Page'));
+const LinkStudentPage = React.lazy(() => import('../app/pages/LinkingStudent-Page'));
 
 // A simple component to center the spinner
 const FullPageSpinner = () => (
@@ -34,45 +39,58 @@ const FullPageSpinner = () => (
 );
 
 export const AppRouter = () => {
-    return(
-        <Suspense fallback={<FullPageSpinner/>}>
-        <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Homepage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/parentHomepage" element={<ParentHomepage/>} />
-            <Route path="/studentHomepage" element={<StudentHomepage/>}/>
-            <Route path="/nurseHomepage" element={<NurseHomepage/>} /> 
-            <Route path="/createStudentHealthRecord" element={<CreateStudentHealthRecordForm />} />
-            <Route path="/viewStudentHealthRecord" element={<ViewStudentHealthRecordPage />} />
-            <Route path="/updateStudentHealthRecord" element={<UpdateStudentHealthRecordPage />} />
-            <Route path="/nurse/medicines" element={<MedicineCRUDPage />} />
-            <Route path="/nurse/incidents" element={<IncidentRecordCRUDPage />} />          
-            <Route path="/parentUserProfile" element={<ParentUserProfile/>}/>
-            <Route path="/assignStudentToParent"/>
-
-           
-
-            {/* Protected Routes can be added here */}
-            {/* Example:
-
-            
-            {/* Protected Routes with a shared layout 
-            <Route 
-            element={
-                <ProtectedRoute>
-                <MainLayout />
-                </ProtectedRoute>
-            }
-            >
-            <Route path="/parentHomepage" element={<ParentHomepage/>} />
-            <Route path="/student-health-form" element={<StudentHealthRecordForm />} />
-             Add other protected routes here 
-            </Route> */}
+  return (
+    <Suspense fallback={<FullPageSpinner />}>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
 
-        </Routes>
-        </Suspense>
-    )
+
+
+        {/* Protected Routes */}
+        <Route path="/parentHomepage" element={
+          <ProtectedRoute><ParentHomepage /></ProtectedRoute>
+        } />
+        <Route path="/studentHomepage" element={
+          <ProtectedRoute><StudentHomepage /></ProtectedRoute>
+        } />
+        <Route path="/nurseHomepage" element={
+          <ProtectedRoute><NurseHomepage /></ProtectedRoute>
+        } />
+        <Route path="/createStudentHealthRecord" element={
+          <ProtectedRoute><CreateStudentHealthRecordForm /></ProtectedRoute>
+        } />
+        <Route path="/viewStudentHealthRecord" element={
+          <ProtectedRoute><ViewStudentHealthRecordPage /></ProtectedRoute>
+        } />
+        <Route path="/updateStudentHealthRecord" element={
+          <ProtectedRoute><UpdateStudentHealthRecordPage /></ProtectedRoute>
+        } />
+        <Route path="/nurse/medicines" element={
+          <ProtectedRoute><MedicineCRUDPage /></ProtectedRoute>
+        } />
+        <Route path="/nurse/incidents" element={
+          <ProtectedRoute><IncidentRecordCRUDPage /></ProtectedRoute>
+        } />
+        <Route path="/parentUserProfile" element={
+          <ProtectedRoute><ParentUserProfile /></ProtectedRoute>
+        } />
+        <Route path="/createMedicineRequest" element={
+          <ProtectedRoute><CreateMedicineRequest /></ProtectedRoute>
+        } />
+        <Route path="/requestMedicine" element={
+          <ProtectedRoute><ParentMedicineRequest /></ProtectedRoute>
+        } />
+        <Route path="/assignStudentToParent" element={
+          <ProtectedRoute><LinkStudentPage /></ProtectedRoute>
+        } />
+
+
+
+      </Routes>
+    </Suspense>
+  )
 }
