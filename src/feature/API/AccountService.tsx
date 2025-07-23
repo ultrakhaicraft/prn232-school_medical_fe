@@ -88,9 +88,26 @@ export const accountService = {
     return response.data.data;
   },
 
+
   getStudentFromParentId: async (parentId: string): Promise<AccountDetail> => {
     const response = await apiClient.get<RawApiResponse<AccountDetail>>(`/account/${parentId}/student`);
     return response.data.data;
+  },
+
+
+  /**
+   * Fetches all student accounts (for dropdowns, etc.)
+   * @returns {Promise<AccountView[]>} A promise that resolves to the list of student accounts.
+   */
+  getAllStudents: async (): Promise<AccountView[]> => {
+    const response = await apiClient.get<RawApiResponse<PaginatedResponse<AccountView>>>('/account', {
+      params: {
+        Role: 'Student',
+        PageNumber: 1,
+        PageSize: 1000,
+      },
+    });
+    return response.data.data.data;
   },
 
 
