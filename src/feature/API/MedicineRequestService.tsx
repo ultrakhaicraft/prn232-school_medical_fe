@@ -19,10 +19,10 @@ export interface MedicineUpdateCreation extends MedicineRequestCreation {
 }
 
 export interface MedicineRequestResponseDto {
-    Id: string;
+    id: string;
     requestId: string;
-    requestedBy: string;
-    requestedByName: string;
+    requestBy: string;
+    requestByName: string;
     forStudent: string;
     forStudentName: string;
     description: string;

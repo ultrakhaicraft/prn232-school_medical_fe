@@ -28,6 +28,7 @@ export interface RequestPageListProps {
 }
 
 const RequestList = ({ requestsData, openModal }: RequestPageListProps) => {
+    console.log("Request List Data:", requestsData);    
     return (
         <div className="request-list-container">
             <div className="request-list-header">
@@ -39,7 +40,7 @@ const RequestList = ({ requestsData, openModal }: RequestPageListProps) => {
                 requestsData.length > 0 ? (
                     <div className="request-cards">
                         {requestsData.map((request) => (
-                            <RequestCard key={request.Id} request={request} openModal={openModal} />
+                            <RequestCard key={request.id} request={request} openModal={openModal} />
                         ))}
                     </div>
                 ) : (
@@ -55,9 +56,10 @@ export interface RequestCardProps {
     openModal: (requestId: string) => void;
 }
 
+
 const RequestCard = ({ request, openModal }: RequestCardProps) => {
     const statusClass = `status-${request.status.toLowerCase()}`;
-
+    
     return (
         <div className={`request-card ${statusClass}`}>
             <div className="card-main-content">
@@ -72,9 +74,9 @@ const RequestCard = ({ request, openModal }: RequestCardProps) => {
                     <p className="card-description">{request.description}</p>
                 </div>
                 <div className="card-actions">
-                    {request.status === 'Approved' && <><button className="action-button"><IconView className="icon" /></button><button onClick={() => openModal(request.Id)} className="action-button"><IconEdit className="icon" /></button></>}
-                    {request.status === 'Pending' && <><button className="action-button"><IconView className="icon" /></button><button onClick={() => openModal(request.Id)} className="action-button"><IconEdit className="icon" /></button></>}
-                    {request.status === 'Rejected' && <><button className="action-button"><IconView className="icon" /></button><button onClick={() => openModal(request.Id)} className="action-button"><IconEdit className="icon" /></button></>}
+                    {request.status === 'Approved' && <><button className="action-button"><IconView className="icon" /></button><button onClick={() => openModal(request.id)} className="action-button"><IconEdit className="icon" /></button></>}
+                    {request.status === 'Pending' && <><button className="action-button"><IconView className="icon" /></button><button onClick={() => openModal(request.id)} className="action-button"><IconEdit className="icon" /></button></>}
+                    {request.status === 'Rejected' && <><button className="action-button"><IconView className="icon" /></button><button onClick={() => openModal(request.id)} className="action-button"><IconEdit className="icon" /></button></>}
                 </div>
             </div>
             <div className="card-footer">

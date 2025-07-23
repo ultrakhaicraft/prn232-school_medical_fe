@@ -42,6 +42,7 @@ export default function ParentMedicineRequestView() {
     }, [])
 
     const openModal = (requestId: string) => {
+        console.log("Opening modal for request ID:", requestId);
         setSelectedRequestId(requestId);
         setIsModalOpen(true);
     };

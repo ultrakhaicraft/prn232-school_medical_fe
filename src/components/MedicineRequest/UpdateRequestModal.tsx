@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { MedicineUpdateCreation } from "../../feature/API/MedicineRequestService";
 import Modal from "../GenericModal";
+import '../../app/CSS/UpdateMedicineRequestModal.css';
 
 export interface UpdateRequestModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ const UpdateRequestModal = ({
 
   // Update formData when initialData changes (e.g., on re-open)
   useEffect(() => {
+    console.log("Modal Open", initialData);
     if (isOpen) {
       setFormData(initialData);
     }
@@ -38,36 +40,42 @@ const UpdateRequestModal = ({
 
   return (
     <Modal title="Update Medicine Request" onClose={onClose}>
-      <form onSubmit={handleSubmit} className="space-y-4 p-4">
+      <form onSubmit={handleSubmit} className="modal-form">
+        <label className="modal-label">Requested By </label>
         <input
           type="text"
           name="requestBy"
           value={formData.requestBy}
           onChange={handleChange}
           placeholder="Requested By"
-          className="w-full border px-3 py-2 rounded"
+          className="modal-input"
+          readOnly
         />
+        <label className="modal-label">For Student </label>
         <input
           type="text"
           name="forStudent"
           value={formData.forStudent}
           onChange={handleChange}
           placeholder="For Student"
-          className="w-full border px-3 py-2 rounded"
+          className="modal-input"
+          readOnly
         />
+        <label className="modal-label">Description </label>
         <textarea
           name="description"
           value={formData.description}
+          rows={5}
           onChange={handleChange}
           placeholder="Description"
-          className="w-full border px-3 py-2 rounded"
+          className="modal-input"
         />
 
-        <div className="flex justify-end space-x-2">
-          <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">
+        <div className="modal-buttons">
+          <button type="button" onClick={onClose} className="btn cancel-btn">
             Cancel
           </button>
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">
+          <button type="submit" className="btn update-btn">
             Update
           </button>
         </div>
@@ -77,3 +85,5 @@ const UpdateRequestModal = ({
 };
 
 export default UpdateRequestModal;
+
+
