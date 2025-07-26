@@ -9,6 +9,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 
 
+
 // Lazy load all the pages/routes
 const Homepage = React.lazy(() => import('../app/pages/guest_area/GuestHome-page'));
 const Login = React.lazy(() => import('../app/pages/guest_area/Login-page'));
@@ -24,6 +25,10 @@ const IncidentRecordCRUDPage = React.lazy(() => import('../app/pages/nurse_area/
 const ParentMedicineRequest = React.lazy(() => import('../app/pages/parent_area/ParentMedicineRequest-page'));
 const ParentUserProfile = React.lazy(() => import('../app/pages/ParentUserProfile-Page'));
 const LinkStudentPage = React.lazy(() => import('../app/pages/LinkingStudent-Page'));
+const NurseRecordList = React.lazy(() => import('../components/Student_Health_Record/NurseRecordList'));
+const NurseRecordDetail = React.lazy(() => import('../components/Student_Health_Record/NurseRecordDetail'));
+const MedicalRecordView = React.lazy(() => import('../components/Student_Health_Record/MedicalRecordView'));
+
 
 // A simple component to center the spinner
 const FullPageSpinner = () => (
@@ -87,9 +92,15 @@ export const AppRouter = () => {
         <Route path="/assignStudentToParent" element={
           <ProtectedRoute><LinkStudentPage /></ProtectedRoute>
         } />
-
-
-
+        <Route path="/nurse/records" element={
+          <ProtectedRoute><NurseRecordList /></ProtectedRoute>
+        } />
+        <Route path="/nurse/records/:id" element={
+          <ProtectedRoute><NurseRecordDetail /></ProtectedRoute>
+        } />
+        <Route path="/parent/medical-record" element={
+          <ProtectedRoute><MedicalRecordView /></ProtectedRoute>
+        } />
       </Routes>
     </Suspense>
   )
