@@ -25,9 +25,12 @@ const IncidentRecordCRUDPage = React.lazy(() => import('../app/pages/nurse_area/
 const ParentMedicineRequest = React.lazy(() => import('../app/pages/parent_area/ParentMedicineRequest-page'));
 const ParentUserProfile = React.lazy(() => import('../app/pages/ParentUserProfile-Page'));
 const LinkStudentPage = React.lazy(() => import('../app/pages/LinkingStudent-Page'));
+const DisplayBlogsPage = React.lazy(() => import('../app/pages/guest_area/DisplayBlogList-page'));
+const BogDetailPage = React.lazy(() => import('../app/pages/guest_area/BlogDetail-page'));
 const NurseRecordList = React.lazy(() => import('../components/Student_Health_Record/NurseRecordList'));
 const NurseRecordDetail = React.lazy(() => import('../components/Student_Health_Record/NurseRecordDetail'));
 const MedicalRecordView = React.lazy(() => import('../components/Student_Health_Record/MedicalRecordView'));
+
 
 
 // A simple component to center the spinner
@@ -51,7 +54,10 @@ export const AppRouter = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/blogs" element={<DisplayBlogsPage />} />
+        <Route path="/blog/:id" element={<BogDetailPage />} />
 
+        
 
 
 

@@ -8,8 +8,8 @@ export default function HomepageNavBar() {
         <div className="header-container">
           <div className="logo">🎓 Starlight Academy</div>
           <nav className="nav">
-            <a href="#">Home</a>
-            <a href="#">Blog</a>           
+            <a href="/">Home</a>
+            <a href="/blogs">Blog</a>           
           </nav>
           <Link to="/login" className="login-button">Login</Link>
         </div>

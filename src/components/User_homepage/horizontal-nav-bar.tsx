@@ -62,7 +62,7 @@ const ProfileDropdown = () => {
     <div className="profile-dropdown-container" ref={dropdownRef}>
       <img
         className="profile-avatar"
-        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fDE?q=80&w=2080&auto=format&fit=crop"
+        src="./assets/PRN_Avatar.svg"
         alt="User profile"
         onClick={() => setOpen(prev => !prev)}
       />

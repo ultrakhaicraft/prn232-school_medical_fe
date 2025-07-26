@@ -11,13 +11,10 @@ interface StudentInfoProp{
 }
 
 const StudentInfo = ({ studentName, studentId } : StudentInfoProp) => {
-    const[isStudentExist,setIsStudentExist]= useState(true)
+   
 
-    //Check if student Id is empty or null before setting isStudentExist value
-     useEffect(() => {
-        const isValid = studentId !== undefined && studentId !== null && studentId.trim() !== '';
-        setIsStudentExist(isValid);
-    }, [studentId]);
+    
+   
 
   
 
