@@ -27,6 +27,12 @@ const ParentUserProfile = React.lazy(() => import('../app/pages/ParentUserProfil
 const LinkStudentPage = React.lazy(() => import('../app/pages/LinkingStudent-Page'));
 const DisplayBlogsPage = React.lazy(() => import('../app/pages/guest_area/DisplayBlogList-page'));
 const BogDetailPage = React.lazy(() => import('../app/pages/guest_area/BlogDetail-page'));
+const NurseRecordList = React.lazy(() => import('../components/Student_Health_Record/NurseRecordList'));
+const NurseRecordDetail = React.lazy(() => import('../components/Student_Health_Record/NurseRecordDetail'));
+const MedicalRecordView = React.lazy(() => import('../components/Student_Health_Record/MedicalRecordView'));
+
+
+
 // A simple component to center the spinner
 const FullPageSpinner = () => (
   <div style={{
@@ -92,9 +98,15 @@ export const AppRouter = () => {
         <Route path="/assignStudentToParent" element={
           <ProtectedRoute><LinkStudentPage /></ProtectedRoute>
         } />
-
-
-
+        <Route path="/nurse/records" element={
+          <ProtectedRoute><NurseRecordList /></ProtectedRoute>
+        } />
+        <Route path="/nurse/records/:id" element={
+          <ProtectedRoute><NurseRecordDetail /></ProtectedRoute>
+        } />
+        <Route path="/parent/medical-record" element={
+          <ProtectedRoute><MedicalRecordView /></ProtectedRoute>
+        } />
       </Routes>
     </Suspense>
   )

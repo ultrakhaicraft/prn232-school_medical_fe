@@ -3,7 +3,15 @@ import apiClient, { PaginatedResponse, RawApiResponse } from "../ApiClient";
 
 
 export interface MedicineRequestQueryParams {
-
+    requestBy?: string;
+    forStudent?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    status?: string;
+    pageIndex?: number;
+    pageSize?: number;
+    sortBy?: string;
+    isDescending?: boolean;
 }
 
 
@@ -15,12 +23,11 @@ export interface MedicineRequestCreation {
 }
 
 export interface MedicineUpdateCreation extends MedicineRequestCreation {
-
+    status?: string;
 }
 
 export interface MedicineRequestResponseDto {
     id: string;
-    requestId: string;
     requestBy: string;
     requestByName: string;
     forStudent: string;
