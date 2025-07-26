@@ -253,3 +253,9 @@ export const IconGroup = ({ className = "" }) => (
     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM10 18a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
   </svg>
 );
+
+export const IconFilter = ({ className = "" }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+  </svg>
+);

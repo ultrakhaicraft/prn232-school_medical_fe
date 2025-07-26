@@ -3,6 +3,8 @@ import { MedicineUpdateCreation } from "../../feature/API/MedicineRequestService
 import Modal from "../GenericModal";
 import '../../app/CSS/UpdateMedicineRequestModal.css';
 
+const statuses: string[] = ["Pending", "Approved", "Rejected", "Deleted"];
+
 export interface UpdateRequestModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -26,7 +28,7 @@ const UpdateRequestModal = ({
     }
   }, [initialData, isOpen]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -70,6 +72,21 @@ const UpdateRequestModal = ({
           placeholder="Description"
           className="modal-input"
         />
+        
+        <label className="modal-label">Status </label>
+        <select
+          name="status"
+          value={formData.status || ''}
+          onChange={handleChange}
+          className="modal-input"
+        >
+          <option value="">Select status...</option>
+          {statuses.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
 
         <div className="modal-buttons">
           <button type="button" onClick={onClose} className="btn cancel-btn">
