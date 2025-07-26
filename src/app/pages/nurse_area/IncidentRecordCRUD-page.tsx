@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 
 import "../../CSS/IncidentRecordCRUD.css"
 import { IconDelete, IconEdit, IconPlus, IconView } from '../../../components/IconList';
-import { IncidentRecordService, IncidentRecord } from '../../../feature/API/IncidentRecordService';
-import { IncidentRecordView } from '../../../components/IncidentRecord/IncidentRecordView';
+import { IncidentRecordService, IncidentRecordView } from '../../../feature/API/IncidentRecordService';
+import { IncidentRecordViewDetail } from '../../../components/IncidentRecord/IncidentRecordView';
 import { ConfirmationModal } from '../../../components/ConfirmationModal';
 import CreateIncidentRecordModal from '../../../components/IncidentRecord/CreateIncidentRecordModal';
 import { Toast } from '../../../components/Notification/Toast';
@@ -11,21 +11,23 @@ import UpdateIncidentRecordModal from '../../../components/IncidentRecord/Update
 
 // Main App Component
 export default function IncidentRecordCRUDPage() {
-  const [incidentData, setIncidentData] = useState<IncidentRecord[]>([]);
-  const [selectedIncident, setSelectedIncident] = useState<IncidentRecord | null>(null);
+  const [incidentData, setIncidentData] = useState<IncidentRecordView[]>([]);
+  const [selectedIncident, setSelectedIncident] = useState<IncidentRecordView | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [incidentToDelete, setIncidentToDelete] = useState<IncidentRecord | null>(null);
+  const [incidentToDelete, setIncidentToDelete] = useState<IncidentRecordView | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [incidentToUpdate, setIncidentToUpdate] = useState<IncidentRecord | null>(null);
+  const [incidentToUpdate, setIncidentToUpdate] = useState<IncidentRecordView | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error'; isVisible: boolean }>({ message: '', type: 'success', isVisible: false });
+
+  
 
   const loadIncidents = () => {
     IncidentRecordService.getAll()
-      .then((res: IncidentRecord[]) => {
+      .then((res: IncidentRecordView[]) => {
         setIncidentData(res);
       })
       .catch(console.error);
@@ -53,7 +55,7 @@ export default function IncidentRecordCRUDPage() {
     setSelectedIncident(null);
   };
 
-  const handleDeleteClick = (incident: IncidentRecord) => {
+  const handleDeleteClick = (incident: IncidentRecordView) => {
     setIncidentToDelete(incident);
     setShowDeleteConfirm(true);
   };
@@ -99,7 +101,7 @@ export default function IncidentRecordCRUDPage() {
     setToast({ message: msg, type: 'error', isVisible: true });
   };
 
-  const handleEditIncident = async (incident: IncidentRecord) => {
+  const handleEditIncident = async (incident: IncidentRecordView) => {
     setLoading(true);
     try {
       const fullIncident = await IncidentRecordService.getById(incident.id);
@@ -143,7 +145,7 @@ export default function IncidentRecordCRUDPage() {
         onEditIncident={handleEditIncident}
       />
       {showModal && selectedIncident && (
-        <IncidentRecordView 
+        <IncidentRecordViewDetail 
           incidentRecord={selectedIncident} 
           isOpen={showModal}
           onClose={handleCloseModal} 
@@ -185,7 +187,7 @@ export default function IncidentRecordCRUDPage() {
 
 // All Sub component of the page
 // Main CRUD component for incident records
-const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteIncident, loading, onCreateIncident, onEditIncident }: { incidentData: IncidentRecord[], onViewIncident: (id: string) => void, onDeleteIncident: (incident: IncidentRecord) => void, loading: boolean, onCreateIncident: () => void, onEditIncident: (incident: IncidentRecord) => void }) => {
+const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteIncident, loading, onCreateIncident, onEditIncident }: { incidentData: IncidentRecordView[], onViewIncident: (id: string) => void, onDeleteIncident: (incident: IncidentRecordView) => void, loading: boolean, onCreateIncident: () => void, onEditIncident: (incident: IncidentRecordView) => void }) => {
   return (
     <div className="crud-container">
       <div className="crud-header">
@@ -203,8 +205,8 @@ const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteInciden
           <thead>
             <tr>
               <th>ID</th>
-              <th>Student ID</th>
-              <th>Incident Type</th>
+              <th>Student Name</th>
+              <th>Incident</th>
               <th>Date Occurred</th>
               <th>Status</th>
               <th>Action</th>
@@ -214,7 +216,7 @@ const IncidentRecordCRUD = ({ incidentData = [], onViewIncident, onDeleteInciden
             {incidentData.map(incident => (
               <tr key={incident.id}>
                 <td>{incident.id}</td>
-                <td>{incident.studentId}</td>
+                <td>{incident.studentName}</td>
                 <td>{incident.incidentType}</td>
                 <td>{new Date(incident.dateOccurred).toLocaleDateString()}</td>
                 <td><StatusBadge status={incident.status} /></td>
@@ -250,7 +252,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
         return 'status-badge-active';
       case 'Inactive':
         return 'status-badge-inactive';
-      case 'Resolved':
+      case 'Comple':
         return 'status-badge-resolved';
       case 'Pending':
         return 'status-badge-pending';

@@ -5,6 +5,7 @@ import UserHomepageNavBar from '../../../components/User_homepage/horizontal-nav
 import WelcomeBox from '../../../components/User_homepage/welcome-box';
 import HealthStatus from '../../../components/User_homepage/health-status-box';
 import HealthAnnouncements from '../../../components/User_homepage/news-box';
+import '../../CSS/ParentHomepage.css';
 
 export default function StudentHomePage() {
     // This component represents the student homepage

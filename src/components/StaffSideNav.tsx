@@ -10,7 +10,7 @@ const SideNav = ({ activeItem, onSelect }: SideNavProps) => {
     { icon: <IconHome className="icon-small" />, label: 'Home' },
     { icon: <IconStudentRecord className="icon-small" />, label: 'Student Record' },
     { icon: <IconMedicine className="icon-small" />, label: 'Medicine' },
-    { icon: <IconMedical className="icon-small" />, label: 'Medical' },
+    { icon: <IconMedical className="icon-small" />, label: 'Medicine Request' },
     { icon: <IconIncidentReport className="icon-small" />, label: 'Incident Report' },
     { icon: <IconVaccine className="icon-small" />, label: 'Vaccine' },
     { icon: <IconHealthCheckup className="icon-small" />, label: 'Health Checkup' },

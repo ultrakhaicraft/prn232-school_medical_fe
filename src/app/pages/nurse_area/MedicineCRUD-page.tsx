@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import "../../CSS//MedicineCRUD.css"
-import { IconDelete, IconEdit, IconHealthCheckup, IconHome, IconIncidentReport, IconMedical, IconMedicine, IconPlus, IconStudentRecord, IconVaccine, IconView, IconClose } from '../../../components/IconList';
+import { IconDelete, IconEdit, IconPlus, IconView } from '../../../components/IconList';
 import { MedicineService, Medicine, PaginatedResponse } from '../../../feature/API/MedicineService';
 import { MedicineView } from '../../../components/Medicine/MedicineView';
 import CreateMedicineModal from '../../../components/Medicine/CreateMedicineModal';

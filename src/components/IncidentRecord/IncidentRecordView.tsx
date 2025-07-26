@@ -1,14 +1,14 @@
 import React from 'react';
-import { IncidentRecord } from '../../feature/API/IncidentRecordService';
+import { IncidentRecordView } from '../../feature/API/IncidentRecordService';
 import { IconClose } from '../IconList';
 
 interface IncidentRecordViewProps {
-  incidentRecord: IncidentRecord;
+  incidentRecord: IncidentRecordView;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const IncidentRecordView: React.FC<IncidentRecordViewProps> = ({ incidentRecord, isOpen, onClose }) => {
+export const IncidentRecordViewDetail: React.FC<IncidentRecordViewProps> = ({ incidentRecord, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -38,8 +38,23 @@ export const IncidentRecordView: React.FC<IncidentRecordViewProps> = ({ incident
               <span className="detail-value">{incidentRecord.studentId}</span>
             </div>
             
+             <div className="detail-row">
+              <span className="detail-label">Student Name</span>
+              <span className="detail-value">{incidentRecord.studentName}</span>
+            </div>
+
             <div className="detail-row">
-              <span className="detail-label">Incident Type</span>
+              <span className="detail-label">Nurse ID</span>
+              <span className="detail-value">{incidentRecord.handleBy}</span>
+            </div>
+
+            <div className="detail-row">
+              <span className="detail-label">Nurse Name</span>
+              <span className="detail-value">{incidentRecord.handleByName}</span>
+            </div>
+
+            <div className="detail-row">
+              <span className="detail-label">Incident</span>
               <span className="detail-value">{incidentRecord.incidentType}</span>
             </div>
             

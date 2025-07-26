@@ -10,6 +10,7 @@ interface CreateIncidentRecordModalProps {
   onError: (msg: string) => void;
 }
 
+
 const initialForm = {
   studentId: '',
   incidentType: '',
@@ -43,7 +44,7 @@ const CreateIncidentRecordModal: React.FC<CreateIncidentRecordModalProps> = ({ i
       errs.studentId = 'Student ID is required.';
     }
     if (!form.incidentType.trim()) {
-      errs.incidentType = 'Incident type is required.';
+      errs.incidentType = 'Incident title is required.';
     }
     if (!form.description.trim()) {
       errs.description = 'Description is required.';
@@ -53,9 +54,7 @@ const CreateIncidentRecordModal: React.FC<CreateIncidentRecordModalProps> = ({ i
     if (!form.dateOccurred) {
       errs.dateOccurred = 'Date occurred is required.';
     }
-    if (!form.status.trim()) {
-      errs.status = 'Status is required.';
-    }
+    
     return errs;
   };
 
@@ -81,7 +80,8 @@ const CreateIncidentRecordModal: React.FC<CreateIncidentRecordModalProps> = ({ i
         incidentType: form.incidentType.trim(),
         description: form.description.trim(),
         dateOccurred: form.dateOccurred,
-        status: form.status.trim(),
+        status: "Active",
+        handleBy: ''
       });
       handleClear();
       onClose();
@@ -123,14 +123,14 @@ const CreateIncidentRecordModal: React.FC<CreateIncidentRecordModalProps> = ({ i
                 <option value="">Select a student...</option>
                 {students.map((student) => (
                   <option key={student.id} value={student.id}>
-                    {student.id} - {student.fullName}
+                    {student.fullName} ({student.email})
                   </option>
                 ))}
               </select>
               {errors.studentId && <div className="error-message">{errors.studentId}</div>}
             </div>
             <div className="detail-row">
-              <span className="detail-label">Incident Type</span>
+              <span className="detail-label">Incident</span>
               <input
                 className="input-field"
                 name="incidentType"
@@ -141,18 +141,7 @@ const CreateIncidentRecordModal: React.FC<CreateIncidentRecordModalProps> = ({ i
               />
               {errors.incidentType && <div className="error-message">{errors.incidentType}</div>}
             </div>
-            <div className="detail-row">
-              <span className="detail-label">Status</span>
-              <input
-                className="input-field"
-                name="status"
-                value={form.status}
-                onChange={handleChange}
-                disabled={isSubmitting}
-                required
-              />
-              {errors.status && <div className="error-message">{errors.status}</div>}
-            </div>
+           
           </div>
           <div className="modal-column">
             <div className="detail-row">

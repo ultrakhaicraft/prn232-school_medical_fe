@@ -56,7 +56,7 @@ export const useAuth = () => {
                 navigate('/studentHomepage');
             } else if(userData.role === 'Parent') {
                 navigate('/parentHomepage'); 
-            } else if(userData.role === 'Nurse') {
+            } else if(userData.role === 'SchoolNurse') {
                 navigate('/nurseHomepage');
             }
 

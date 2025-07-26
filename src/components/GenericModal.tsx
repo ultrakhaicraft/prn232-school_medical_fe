@@ -1,4 +1,4 @@
-import '../app/CSS/UpdateMedicineRequestModal.css';
+
 
 const Modal = ({ title, children, onClose }: any) => (
   <div className="modal-overlay">
