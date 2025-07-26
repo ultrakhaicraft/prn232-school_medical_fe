@@ -1,94 +1,109 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Arial', sans-serif; 
-    box-sizing: border-box;
-    font-size: 16px; /* Base font size */
-    color: #171717; /* Default text color */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  font-size: 16px;
+  /* Base font size */
+  color: #171717;
+  /* Default text color */
 }
 
-*, *::before, *::after {
-    box-sizing: border-box; /* Ensures padding and border are included in element's total width and height */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* Ensures padding and border are included in element's total width and height */
 }
 
 .normal-page {
-    width: 100%;
-    min-height: 100vh;
+  width: 100%;
+  min-height: 100vh;
 }
 
 /*Side by Side Layout*/
-.flex-page{
-    display: flex; /* Key for side-by-side layout */
-    width: 100%;
-    min-height: 100vh;
+.flex-page {
+  display: flex;
+  /* Key for side-by-side layout */
+  width: 100%;
+  min-height: 100vh;
 }
 
 .primary-btn {
-    width: 100%; /*Change size when needed in specific page css*/
-    padding: 12px;
-    background-color: #1c5db7; /* Example button color */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /*Change size when needed in specific page css*/
+  padding: 12px;
+  background-color: #1c5db7;
+  /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .primary-btn:hover {
-    background-color: #ffffff; 
-    color: #1c5db7; /* Change to white with blue text on hover */
-    border: #1c5db7 1px solid; /* Add border on hover */
+  background-color: #ffffff;
+  color: #1c5db7;
+  /* Change to white with blue text on hover */
+  border: #1c5db7 1px solid;
+  /* Add border on hover */
 }
 
 .inverse-primary-btn {
-    width: 100%; /*Change size when needed in specific page css*/
-    padding: 12px;
-    background-color: #1c5db7; /* Example button color */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /*Change size when needed in specific page css*/
+  padding: 12px;
+  background-color: #1c5db7;
+  /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .inverse-primary-btn:hover {
-    background-color: #ffffff; 
-    color: #1c5db7; /* Change to white with blue text on hover */
-    border: #1c5db7 1px solid; /* Add border on hover */
+  background-color: #ffffff;
+  color: #1c5db7;
+  /* Change to white with blue text on hover */
+  border: #1c5db7 1px solid;
+  /* Add border on hover */
 }
 
 /* Back Link */
 .back-link {
-    font-size: 1.5rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: #4f46e5;
-    font-weight: 500;
-    margin-bottom: 2rem;
+  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #4f46e5;
+  font-weight: 500;
+  margin-bottom: 2rem;
 }
 
-.back-link:hover{
-   border: #1c5db7 1px solid; 
+.back-link:hover {
+  border: #1c5db7 1px solid;
 }
 
 .input-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
 }
 
 .input-group input[type='text'],
@@ -96,11 +111,11 @@ body, html {
 .input-group input[type='email'],
 .input-group input[type='tel'],
 .input-group input[type='number'] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1em;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1em;
 }
 
 .input-group input[type='text']:focus,
@@ -108,9 +123,10 @@ body, html {
 .input-group input[type='email']:focus,
 .input-group input[type='tel']:focus,
 .input-group input[type='number']:focus {
-    outline: none;
-    border-color: #1c5db7; /* Match left side color or use a primary color */
-    box-shadow: 0 0 0 2px rgba(58, 58, 118, 0.2);
+  outline: none;
+  border-color: #1c5db7;
+  /* Match left side color or use a primary color */
+  box-shadow: 0 0 0 2px rgba(58, 58, 118, 0.2);
 }
 
 .header {
@@ -132,7 +148,7 @@ body, html {
 }
 
 .logo {
-  position:relative;
+  position: relative;
   left: 5%;
   font-size: 1.8rem;
   font-weight: bolder;
@@ -144,11 +160,11 @@ body, html {
   text-decoration: none;
   color: #333;
   font-weight: bold;
-  font-size:1.2rem;
+  font-size: 1.2rem;
 }
 
 .login-button {
-  position:relative;
+  position: relative;
   right: 5%;
   display: inline-block;
   background-color: #2b50ec;
@@ -184,13 +200,58 @@ body, html {
 }
 
 .no-link {
-  
-  text-decoration: none; /* Remove underline */
+
+  text-decoration: none;
+  /* Remove underline */
 }
 
 
 /* Icons */
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Side Nav for staff */
+.side-nav {
+  width: 240px;
+  background-color: white;
+  padding: 1.5rem 1rem;
+  height: 100vh;
+  position: sticky;
+  top: 4rem; 
+  border-right: 1px solid #e5e7eb;
+}
+
+.side-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-nav .nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: large;
+}
+
+.side-nav .nav-item:hover, .side-nav .nav-item:focus {
+  background-color: #f3f4f6;
+}
+
+.side-nav .nav-item.active {
+  background-color: #eef2ff;
+  color: #3730a3;
+  font-weight: 600;
+}
+
+.side-nav .nav-item svg {
+  margin-right: 0.75rem;
+}

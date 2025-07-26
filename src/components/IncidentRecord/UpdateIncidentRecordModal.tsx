@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { IncidentRecordService, IncidentRecord } from '../../feature/API/IncidentRecordService';
+import { IncidentRecordService, IncidentRecordView } from '../../feature/API/IncidentRecordService';
 import { accountService, AccountView } from '../../feature/API/AccountService';
 import { IconClose } from '../IconList';
 
+
+
 interface UpdateIncidentRecordModalProps {
   isOpen: boolean;
-  incidentRecord: IncidentRecord | null;
+  incidentRecord: IncidentRecordView | null;
   onClose: () => void;
   onSuccess: () => void;
   onError: (msg: string) => void;
 }
-
+const statuses: string[] =["Active","Inactive","CompletelyHealed"];
 const UpdateIncidentRecordModal: React.FC<UpdateIncidentRecordModalProps> = ({ isOpen, incidentRecord, onClose, onSuccess, onError }) => {
   const [form, setForm] = useState({
     studentId: '',
     handleBy: '',
+    handleByName:'',
     incidentType: '',
     description: '',
     dateOccurred: '',
@@ -30,6 +33,7 @@ const UpdateIncidentRecordModal: React.FC<UpdateIncidentRecordModalProps> = ({ i
       setForm({
         studentId: incidentRecord.studentId || '',
         handleBy: incidentRecord.handleBy || '',
+        handleByName: incidentRecord.handleByName || '',
         incidentType: incidentRecord.incidentType || '',
         description: incidentRecord.description || '',
         dateOccurred: incidentRecord.dateOccurred ? incidentRecord.dateOccurred.slice(0, 16) : '',
@@ -163,7 +167,7 @@ const UpdateIncidentRecordModal: React.FC<UpdateIncidentRecordModalProps> = ({ i
               {errors.handleBy && <div className="error-message">{errors.handleBy}</div>}
             </div>
             <div className="detail-row">
-              <span className="detail-label">Incident Type</span>
+              <span className="detail-label">Incident</span>
               <input
                 className="input-field"
                 name="incidentType"
@@ -178,14 +182,21 @@ const UpdateIncidentRecordModal: React.FC<UpdateIncidentRecordModalProps> = ({ i
           <div className="modal-column">
             <div className="detail-row">
               <span className="detail-label">Status</span>
-              <input
+             <select
                 className="input-field"
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                disabled={isSubmitting}
+                disabled={isSubmitting || isLoadingStudents}
                 required
-              />
+              >
+                <option value="">Select a status...</option>
+                {statuses.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
               {errors.status && <div className="error-message">{errors.status}</div>}
             </div>
             <div className="detail-row">

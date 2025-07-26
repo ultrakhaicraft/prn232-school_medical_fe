@@ -46,3 +46,4 @@ export const MedicineService = {
     return response.data.data;
   },
 }; 
+
