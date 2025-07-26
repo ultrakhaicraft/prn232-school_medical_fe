@@ -110,6 +110,21 @@ export const accountService = {
     return response.data.data.data;
   },
 
+  /**
+   * Fetches all parent accounts (for dropdowns, etc.)
+   * @returns {Promise<AccountView[]>} A promise that resolves to the list of parent accounts.
+   */
+  getAllParents: async (): Promise<AccountView[]> => {
+    const response = await apiClient.get<RawApiResponse<PaginatedResponse<AccountView>>>('/account', {
+      params: {
+        Role: 'Parent',
+        PageNumber: 1,
+        PageSize: 1000,
+      },
+    });
+    return response.data.data.data;
+  },
+
 
   /**
    * Creates a new account.
