@@ -9,6 +9,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 
 
+
 // Lazy load all the pages/routes
 const Homepage = React.lazy(() => import('../app/pages/guest_area/GuestHome-page'));
 const Login = React.lazy(() => import('../app/pages/guest_area/Login-page'));
@@ -24,7 +25,8 @@ const IncidentRecordCRUDPage = React.lazy(() => import('../app/pages/nurse_area/
 const ParentMedicineRequest = React.lazy(() => import('../app/pages/parent_area/ParentMedicineRequest-page'));
 const ParentUserProfile = React.lazy(() => import('../app/pages/ParentUserProfile-Page'));
 const LinkStudentPage = React.lazy(() => import('../app/pages/LinkingStudent-Page'));
-
+const DisplayBlogsPage = React.lazy(() => import('../app/pages/guest_area/DisplayBlogList-page'));
+const BogDetailPage = React.lazy(() => import('../app/pages/guest_area/BlogDetail-page'));
 // A simple component to center the spinner
 const FullPageSpinner = () => (
   <div style={{
@@ -46,7 +48,10 @@ export const AppRouter = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/blogs" element={<DisplayBlogsPage />} />
+        <Route path="/blog/:id" element={<BogDetailPage />} />
 
+        
 
 
 
