@@ -35,7 +35,6 @@ const NurseRecordList = () => {
           {records.map(record => (
             <tr key={record.id}>
               <td>{record.studentName}</td>
-              <td>{record.parentName}</td>
               <td>{record.status}</td>
               <td>
                 <Link to={`/nurse/records/${record.id}`}>View</Link>

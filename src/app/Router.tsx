@@ -29,7 +29,7 @@ const DisplayBlogsPage = React.lazy(() => import('../app/pages/guest_area/Displa
 const BogDetailPage = React.lazy(() => import('../app/pages/guest_area/BlogDetail-page'));
 const NurseRecordList = React.lazy(() => import('../components/Student_Health_Record/NurseRecordList'));
 const NurseRecordDetail = React.lazy(() => import('../components/Student_Health_Record/NurseRecordDetail'));
-const MedicalRecordView = React.lazy(() => import('../components/Student_Health_Record/MedicalRecordView'));
+
 
 
 
@@ -105,7 +105,7 @@ export const AppRouter = () => {
           <ProtectedRoute><NurseRecordDetail /></ProtectedRoute>
         } />
         <Route path="/parent/medical-record" element={
-          <ProtectedRoute><MedicalRecordView /></ProtectedRoute>
+          <ProtectedRoute><ViewStudentHealthRecordPage/></ProtectedRoute>
         } />
       </Routes>
     </Suspense>

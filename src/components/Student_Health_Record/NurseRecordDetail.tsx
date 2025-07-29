@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { StudentHealthRecordDetail, getStudentRecordById, updateRecordStatus } from "../../feature/API/StudentHealthRecordService";
+import { StudentHealthRecordDetail, StudentHealthRecordService } from "../../feature/API/StudentHealthRecordService";
 
 const NurseRecordDetail = () => {
+
   const { id } = useParams<{ id: string }>();
   const [record, setRecord] = useState<StudentHealthRecordDetail | null>(null);
 
   useEffect(() => {
-    if (id) getStudentRecordById(Number(id)).then(setRecord);
+    if (id) StudentHealthRecordService.getDetailById(id).then(setRecord);
   }, [id]);
 
   const handleStatusChange = (newStatus: string) => {
     if (!record) return;
-    updateRecordStatus(record.id, newStatus).then(() =>
+     StudentHealthRecordService.updateRecordStatus(record.id, newStatus).then(() =>
       setRecord({ ...record, status: newStatus })
     );
   };
 
   if (!record) return <p>Loading...</p>;
-
+  
   return (
     <div className="record-detail">
       <h2>{record.studentName}'s Health Record</h2>
-      <p>Parent: {record.parentName}</p>
+      <p>Student ID: {record.studentId}</p>
       <p>Height: {record.height} cm</p>
       <p>Allergies: {record.allergies}</p>
       <p>Chronic Diseases: {record.chronicDiseases}</p>

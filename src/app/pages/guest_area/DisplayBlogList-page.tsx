@@ -3,6 +3,9 @@ import Footer from "../../../components/Landing_Page/footer";
 import HomepageNavBar from "../../../components/Landing_Page/homepage-nav-bar";
 import { IconCalendar, IconFilter, IconPageBack, IconPageNext, IconSearch } from "../../../components/IconList";
 import "../../CSS/ViewBlogs.css";
+import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { BlogService } from '../../../feature/BlogService'; // Adjust path as needed
 
 // --- Types ---
 interface Author {
@@ -36,27 +39,11 @@ interface PaginationProps {
     onPageChange: (page: number | ((prev: number) => number)) => void;
 }
 
-// --- Mock Data ---
-const articlesData: Article[] = [
-    {
-        id: 1,
-        category: 'Nutrition',
-        title: 'Healthy Eating Habits for School Children',
-        excerpt: 'Discover essential nutrition tips to keep your child energized and focused throughout the school day.',
-        author: {
-            name: 'Dr. Sarah Williams',
-            avatarUrl: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop',
-        },
-        date: 'May 16, 2025',
-        readTime: '5 min read',
-        views: '1.2k views',
-        imageUrl: 'https://images.unsplash.com/photo-1542868275-632b63868113?q=80&w=2070&auto=format&fit=crop',
-    },
-    // ... other articles ...
-];
+
 
 // --- Main App Component ---
 export default function DisplayBlogsPage() {
+    
     return (
         <div className="app-shell">
             <HomepageNavBar />
@@ -82,7 +69,7 @@ const BlogListPage = () => {
                 <h2>Latest Articles</h2>
                 <span className="results-count">24 articles found</span>
             </div>
-            <ArticleGrid articles={articlesData} />
+            <ArticleGrid articles={BlogService.getAllBlogs()} />
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         </div>
     );
@@ -121,7 +108,7 @@ const ArticleGrid = ({ articles }: ArticleGridProps) => (
 );
 
 const ArticleCard = ({ article }: ArticleCardProps) => (
-    <a href="#" className="article-card">
+    <Link to={`/blog/${article.id}`} className="article-card">
         <img src={article.imageUrl} alt={article.title} className="article-image" />
         <div className="article-content">
             <p className="article-category">{article.category}</p>
@@ -138,7 +125,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => (
                 </div>
             </div>
         </div>
-    </a>
+    </Link>
 );
 
 const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
