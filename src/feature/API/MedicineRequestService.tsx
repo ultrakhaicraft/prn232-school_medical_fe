@@ -73,5 +73,12 @@ export const MedicineRequestService = {
         const response = await apiClient.put<RawApiResponse<MedicineRequestResponseDto>>
             (`/medical-request/${id}`, data);
         return response.data.data;
+    },
+
+    changeStatus: async (studentHealthRecordId: string, newStatus: string): Promise<string> => {
+    const response = await apiClient.patch<RawApiResponse<string>>(`/student-health-record/change-status/${studentHealthRecordId}`,
+      newStatus
+    )
+    return response.data.data;
     }
 };

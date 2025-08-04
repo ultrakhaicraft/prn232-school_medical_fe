@@ -1,17 +1,33 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { StudentHealthRecordDetail, getAllStudentRecords, updateRecordStatus } from "../../feature/API/StudentHealthRecordService";
+import { GetAllStudentHealthRecordsParams, StudentHealthRecordDetail, StudentHealthRecordService, StudentHealthRecordView} from "../../feature/API/StudentHealthRecordService";
+import { PaginatedResponse } from "../../feature/ApiClient";
 
 const NurseRecordList = () => {
   const [records, setRecords] = useState<StudentHealthRecordDetail[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getAllStudentRecords().then(setRecords).finally(() => setLoading(false));
+   
+
   }, []);
 
-  const handleStatusChange = (id: number, newStatus: string) => {
-    updateRecordStatus(id, newStatus).then(() =>
+  const GetAllRecord = () => {
+     var param : GetAllStudentHealthRecordsParams={
+      StudentName="",
+    };
+
+    var result : PaginatedResponse<StudentHealthRecordView> = StudentHealthRecordService.getAll(param);
+
+    setRecords(result.data);
+
+    if(records!=null){
+      setLoading(false);
+    }
+  }
+
+  const handleStatusChange = (id: string, newStatus: string) => {
+    StudentHealthRecordService.changeStatus(id, newStatus).then(() =>
       setRecords(prev => prev.map(r => (r.id === id ? { ...r, status: newStatus } : r)))
     );
   };
